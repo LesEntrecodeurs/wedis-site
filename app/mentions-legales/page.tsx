@@ -1,55 +1,48 @@
 import type { Metadata } from 'next';
+import { PageHero } from '@/components/site/PageHero';
+import { Prose } from '@/components/site/Prose';
+import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',
-  description: 'Mentions légales et informations sur l’éditeur du site.',
+  description:
+    "Mentions légales du site Wédis : éditeur, hébergement, propriété intellectuelle et données personnelles.",
   alternates: { canonical: '/mentions-legales' }
 };
 
-/**
- * Mentions légales — contenu statique éditable par l'agent. Remplace les
- * champs entre crochets par les informations réelles du shop (éditeur,
- * hébergeur, etc.). Contenu indicatif, à faire valider juridiquement.
- */
-export default function MentionsLegalesPage() {
-  return (
-    <article className="mx-auto max-w-2xl space-y-8">
-      <h1 className="text-2xl font-bold">Mentions légales</h1>
-
-      {sections.map((s) => (
-        <section key={s.title}>
-          <h2 className="text-lg font-semibold">{s.title}</h2>
-          <p className="mt-2 text-sm leading-relaxed whitespace-pre-line text-neutral-600">
-            {s.body}
-          </p>
-        </section>
-      ))}
-    </article>
-  );
-}
-
-// ⤵ À personnaliser pour le shop puis faire valider juridiquement.
-const sections = [
+const SECTIONS = [
   {
-    title: 'Éditeur du site',
-    body: `[Raison sociale] — [Forme juridique] au capital de [montant] €.
-Siège social : [adresse]. SIREN : [numéro]. TVA intracom. : [numéro].
-Directeur de la publication : [nom].`
+    heading: 'Éditeur du site',
+    body: [
+      `Le site ${SITE.name} est édité par Wédis, dont le siège social est situé ${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}.`,
+      `Téléphone : ${SITE.phone} — Email : ${SITE.email}. Les mentions légales détaillées (raison sociale, forme juridique, capital, SIREN, TVA intracommunautaire, directeur de la publication) sont à compléter par l'éditeur.`
+    ]
   },
   {
-    title: 'Hébergement',
-    body: `Ce site est hébergé par [hébergeur], [adresse de l’hébergeur].`
+    heading: 'Hébergement',
+    body: [
+      "Ce site est hébergé et déployé via la plateforme d'édition du prestataire technique. Les coordonnées de l'hébergeur sont disponibles sur demande."
+    ]
   },
   {
-    title: 'Propriété intellectuelle',
-    body: `L’ensemble des contenus (textes, images, marques, logos) est protégé.
-Toute reproduction sans autorisation préalable est interdite.`
+    heading: 'Propriété intellectuelle',
+    body: [
+      "L'ensemble des contenus du site (textes, images, marques, logos) est protégé par le droit de la propriété intellectuelle. Toute reproduction, représentation ou diffusion sans autorisation préalable écrite de Wédis est interdite."
+    ]
   },
   {
-    title: 'Données personnelles',
-    body: `Les données collectées lors de la création de compte et des commandes
-sont utilisées pour le traitement de la relation commerciale. Conformément au
-RGPD, vous disposez d’un droit d’accès, de rectification et de suppression en
-écrivant à [email de contact].`
+    heading: 'Données personnelles',
+    body: [
+      `Les données collectées lors de la création de compte et des commandes sont utilisées pour le traitement de la relation commerciale. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression en écrivant à ${SITE.email}.`
+    ]
   }
 ];
+
+export default function MentionsLegalesPage() {
+  return (
+    <div className="-mt-10 space-y-16 md:space-y-20">
+      <PageHero crumbs={[{ label: 'Mentions légales' }]} title="Mentions légales" />
+      <Prose sections={SECTIONS} />
+    </div>
+  );
+}

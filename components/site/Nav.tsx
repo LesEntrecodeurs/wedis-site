@@ -1,139 +1,107 @@
 import Link from 'next/link';
-import type { ShopContext, User } from '@extracom/site-kit';
+import Image from 'next/image';
+import { Menu, ChevronDown, Search, User, Phone } from 'lucide-react';
+import type { ShopContext, User as SdkUser } from '@extracom/site-kit';
 import { CartLink } from './CartLink';
-import { CategoryMenu } from './CategoryMenu';
+import { SITE } from '@/lib/site';
+
+const MENU: [string, string][] = [
+  ['Qui sommes-nous ?', '/a-propos'],
+  ['Promotions - Déstockage', '/catalogue'],
+  ["Matériels d'occasions", '/catalogue'],
+  ['Contact', '/contact'],
+  ['Marques', '/marques']
+];
 
 export function Nav({
   context,
   user
 }: {
   context: ShopContext | null;
-  user?: User | null;
+  user?: SdkUser | null;
 }) {
-  const title = context?.branding?.name ?? context?.shopName ?? 'Boutique';
-  const categories = context?.catalogTree?.slice(0, 8) ?? [];
+  void context;
   const firstName = user?.name?.split(' ')[0];
 
   return (
-    <header className="sticky top-0 z-20 bg-white">
-      <div className="bg-[var(--brand-dark)] text-center text-xs text-white">
-        <div className="container-x py-1.5">
-          Livraison rapide · Tarifs négociés pour les professionnels
-        </div>
-      </div>
-
-      <div className="border-b border-neutral-200">
-        <div className="container-x flex h-16 items-center gap-6">
-          <Link
-            href="/"
-            className="shrink-0 text-lg font-semibold tracking-tight"
-          >
-            {title}
+    <header className="sticky top-0 z-30">
+      <div className="bg-[var(--brand)] text-white">
+        <div className="container-x flex items-center gap-4 py-4">
+          <Link href="/" className="shrink-0">
+            <Image
+              src="/wedis/logo-white.png"
+              alt="Wédis — Matériels et produits d'hygiène professionnelle"
+              width={200}
+              height={126}
+              priority
+              className="h-14 w-auto"
+            />
           </Link>
 
-          <form action="/catalogue" className="hidden flex-1 md:block">
-            <div className="relative max-w-md">
-              <SearchIcon className="pointer-events-none absolute top-2.5 left-3 h-4 w-4 text-neutral-400" />
+          <form
+            action="/catalogue"
+            className="mx-auto hidden w-full max-w-xl md:block"
+          >
+            <div className="flex items-center gap-2 rounded-full bg-white p-1.5 pl-4">
+              <Search className="size-4 shrink-0 text-neutral-400" />
               <input
                 name="q"
-                placeholder="Rechercher un article…"
-                aria-label="Rechercher un article"
-                className="field pl-9"
+                placeholder="Rechercher..."
+                aria-label="Rechercher dans le catalogue"
+                className="min-w-0 flex-1 bg-transparent text-sm text-neutral-800 outline-none"
               />
+              <button
+                type="submit"
+                className="shrink-0 rounded-full bg-[var(--brand)] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[var(--brand-dark)]"
+              >
+                Rechercher
+              </button>
             </div>
           </form>
 
-          <nav className="ml-auto flex items-center gap-5 text-sm">
+          <div className="ml-auto flex items-center gap-6">
             <Link
-              href="/catalogue"
-              className="hidden font-medium text-neutral-700 hover:text-[var(--brand-dark)] sm:inline"
+              href={user ? '/compte' : '/connexion'}
+              className="flex flex-col items-center gap-0.5 text-xs transition hover:opacity-80"
             >
-              Catalogue
+              <User className="size-5" />
+              <span>{firstName ? firstName : 'Espace Client'}</span>
             </Link>
+            {user && <CartLink />}
+            <a
+              href={`tel:${SITE.phoneHref}`}
+              className="hidden flex-col items-center gap-0.5 text-xs transition hover:opacity-80 sm:flex"
+            >
+              <Phone className="size-5" />
+              <span>{SITE.phone}</span>
+            </a>
+          </div>
+        </div>
+      </div>
 
-            {user ? (
-              <CartLink />
-            ) : (
+      <div className="border-t border-white/10 bg-[var(--brand-dark)] text-white">
+        <div className="container-x flex items-center gap-1 overflow-x-auto">
+          <Link
+            href="/catalogue"
+            className="flex shrink-0 items-center gap-2 border-r border-white/10 py-3 pr-5 text-sm font-semibold"
+          >
+            <Menu className="size-4" />
+            Toutes les catégories
+            <ChevronDown className="size-4" />
+          </Link>
+          <nav className="flex items-center">
+            {MENU.map(([label, href]) => (
               <Link
-                href="/panier"
-                className="flex items-center gap-1.5 text-neutral-700 hover:text-neutral-900"
+                key={label}
+                href={href}
+                className="shrink-0 px-4 py-3 text-sm font-medium whitespace-nowrap transition hover:bg-white/10"
               >
-                <CartIcon className="h-5 w-5" />
-                <span className="hidden sm:inline">Panier</span>
+                {label}
               </Link>
-            )}
-
-            {user ? (
-              <Link
-                href="/compte"
-                className="flex items-center gap-1.5 text-neutral-700 hover:text-neutral-900"
-              >
-                <UserIcon className="h-5 w-5" />
-                <span className="hidden sm:inline">
-                  {firstName ? `Bonjour, ${firstName}` : 'Mon compte'}
-                </span>
-              </Link>
-            ) : (
-              <Link href="/connexion" className="btn-primary !px-4 !py-2">
-                Connexion
-              </Link>
-            )}
+            ))}
           </nav>
         </div>
-
-        <CategoryMenu categories={categories} />
       </div>
     </header>
-  );
-}
-
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m21 21-4.3-4.3" strokeLinecap="round" />
-    </svg>
-  );
-}
-function UserIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 21a8 8 0 0 1 16 0" strokeLinecap="round" />
-    </svg>
-  );
-}
-function CartIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <circle cx="9" cy="20" r="1.5" />
-      <circle cx="18" cy="20" r="1.5" />
-      <path
-        d="M2 3h3l2.4 12.4a1 1 0 0 0 1 .8h8.7a1 1 0 0 0 1-.8L21 7H6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
