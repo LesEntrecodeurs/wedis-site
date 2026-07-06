@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUpDown, Layers, Tag, X } from 'lucide-react';
-import type { ArticleSort, Family } from '@extracom/site-kit';
+import { ArrowUpDown, Tag, X } from 'lucide-react';
+import type { ArticleSort } from '@extracom/site-kit';
 import {
   Select,
   SelectContent,
@@ -43,12 +43,10 @@ const SORTS: { value: ArticleSort; label: string }[] = [
  * « Réinitialiser ».
  */
 export function CatalogueFilters({
-  families,
   brands,
   current,
   activeCatalogLabel
 }: {
-  families: Family[];
   /** Marques du catalogue (champ libre) pour le select. */
   brands: string[];
   current: Current;
@@ -100,26 +98,6 @@ export function CatalogueFilters({
             <X className="size-3.5" />
           </button>
         </span>
-      )}
-
-      {families.length > 0 && (
-        <Select
-          value={current.family ?? ALL}
-          onValueChange={(v) => apply({ family: v === ALL ? undefined : v })}
-        >
-          <SelectTrigger className="w-[190px] rounded-full">
-            <Layers className="size-4 text-neutral-400" />
-            <SelectValue placeholder="Famille" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value={ALL}>Toutes les familles</SelectItem>
-            {families.map((f) => (
-              <SelectItem key={f.code} value={f.code}>
-                {f.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       )}
 
       {brands.length > 0 && (

@@ -67,7 +67,7 @@ const FAQ = [
 
 export default function AProposPage() {
   return (
-    <div className="-mt-10 space-y-16 md:space-y-20">
+    <div className="-mt-10 space-y-20 md:space-y-28">
       <PageHero
         crumbs={[{ label: 'Qui sommes-nous ?' }]}
         title="Wédis, votre partenaire en hygiène professionnelle dans le Grand Est depuis plus de 25 ans"
@@ -84,13 +84,13 @@ export default function AProposPage() {
         />
       </section>
 
-      <section className="container-x grid gap-12 md:grid-cols-2">
+      <section className="container-x grid gap-16 md:grid-cols-2">
         <div>
           <SectionHeading
             eyebrow="Notre histoire"
             title="Plus de 25 ans d'expertise"
           />
-          <p className="mt-4 leading-relaxed text-neutral-600">
+          <p className="mt-6 text-[17px] leading-8 font-medium text-neutral-700">
             Fondée en 1998, l'entreprise s'est développée autour d'une
             conviction : offrir aux professionnels des solutions d'hygiène
             efficaces tout en privilégiant la proximité, le conseil et la qualité
@@ -98,7 +98,7 @@ export default function AProposPage() {
             l'hygiène professionnelle, aidant ses clients à relever leurs défis
             quotidiens de propreté et de performance opérationnelle.
           </p>
-          <p className="mt-4 leading-relaxed text-neutral-600">
+          <p className="mt-5 text-[17px] leading-8 font-medium text-neutral-700">
             L'expertise s'appuie sur Joffrey Jacquet, expert du nettoyage des
             sols depuis 30 ans, qui accompagne les professionnels dans
             l'évolution de leurs pratiques en intégrant des solutions de
@@ -110,10 +110,13 @@ export default function AProposPage() {
             eyebrow="Une entreprise de proximité"
             title="Nos valeurs"
           />
-          <ul className="mt-4 space-y-3">
+          <ul className="mt-6 space-y-4">
             {VALEURS.map((v) => (
-              <li key={v} className="flex items-center gap-3 text-neutral-700">
-                <CheckCircle2 className="size-5 shrink-0 text-[var(--brand)]" />
+              <li
+                key={v}
+                className="flex items-center gap-3 text-lg font-semibold text-[var(--brand-slate)]"
+              >
+                <CheckCircle2 className="size-6 shrink-0 text-[var(--brand)]" />
                 {v}
               </li>
             ))}
@@ -122,17 +125,17 @@ export default function AProposPage() {
       </section>
 
       <section className="full-bleed bg-[var(--brand-light)]">
-        <div className="container-x py-14 md:py-20">
+        <div className="container-x py-20 md:py-28">
           <SectionHeading
             eyebrow="Notre offre"
             title="Une expertise complète en hygiène professionnelle"
             intro="Wédis accompagne ses clients dans l'optimisation de leurs protocoles de nettoyage afin d'améliorer l'efficacité des interventions et la maîtrise des coûts."
           />
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {EXPERTISE.map((e) => (
               <div
                 key={e}
-                className="rounded-xl bg-white p-4 text-sm font-medium text-[var(--brand-slate)] shadow-sm"
+                className="rounded-xl bg-white p-5 text-base font-semibold text-[var(--brand-slate)] shadow-sm"
               >
                 {e}
               </div>
@@ -147,13 +150,13 @@ export default function AProposPage() {
           title="Intégrer un robot de nettoyage, étape par étape"
           intro="Depuis plus de 25 ans, Wédis accompagne les professionnels dans l'entretien de tous types de sols, quels que soient leur surface, leur fréquentation ou leurs contraintes."
         />
-        <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {ETAPES.map((e, i) => (
-            <li key={e} className="card p-5">
-              <span className="font-display text-2xl font-bold text-[var(--brand-light)]">
+            <li key={e} className="card p-6">
+              <span className="font-display text-3xl font-bold text-[var(--brand-accent)]">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p className="mt-2 text-sm font-medium text-[var(--brand-slate)]">
+              <p className="mt-3 text-base font-semibold text-[var(--brand-slate)]">
                 {e}
               </p>
             </li>

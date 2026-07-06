@@ -111,7 +111,6 @@ export default async function CataloguePage({
     cachedBrands().catch(() => [] as string[])
   ]);
 
-  const families = context?.families ?? [];
   const total = res.pagination.total;
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
@@ -121,6 +120,11 @@ export default async function CataloguePage({
     activeCatalogId != null && context?.catalogTree
       ? findCatalogLabel(context.catalogTree, activeCatalogId)
       : undefined;
+  // Fil d'ariane : chemin racine → catégorie active.
+  const catalogTrail =
+    activeCatalogId != null && context?.catalogTree
+      ? (findCatalogPath(context.catalogTree, activeCatalogId) ?? [])
+      : [];
 
   const pageHref = (p: number) => {
     const params = new URLSearchParams();
@@ -160,6 +164,49 @@ export default async function CataloguePage({
         </aside>
 
         <div className="min-w-0 flex-1">
+          <nav
+            aria-label="Fil d'ariane"
+            className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-neutral-500"
+          >
+            <Link href="/" className="hover:text-[var(--brand-dark)]">
+              Accueil
+            </Link>
+            <span aria-hidden className="text-neutral-300">
+              /
+            </span>
+            {catalogTrail.length === 0 ? (
+              <span className="font-medium text-neutral-700">Catalogue</span>
+            ) : (
+              <>
+                <Link
+                  href="/catalogue"
+                  className="hover:text-[var(--brand-dark)]"
+                >
+                  Catalogue
+                </Link>
+                {catalogTrail.map((node, i) => (
+                  <span key={node.id} className="flex items-center gap-1.5">
+                    <span aria-hidden className="text-neutral-300">
+                      /
+                    </span>
+                    {i === catalogTrail.length - 1 ? (
+                      <span className="font-medium text-neutral-700">
+                        {node.label}
+                      </span>
+                    ) : (
+                      <Link
+                        href={`/catalogue?catalog=${node.id}&clevel=${node.level}`}
+                        className="hover:text-[var(--brand-dark)]"
+                      >
+                        {node.label}
+                      </Link>
+                    )}
+                  </span>
+                ))}
+              </>
+            )}
+          </nav>
+
           <form className="mb-4">
             <input
               name="q"
@@ -183,7 +230,6 @@ export default async function CataloguePage({
           </form>
 
           <CatalogueFilters
-        families={families}
         brands={brands}
         activeCatalogLabel={activeCatalogLabel}
         current={{
@@ -255,11 +301,28 @@ function findCatalogLabel(
   id: number
 ): string | undefined {
   for (const node of nodes) {
-    if (node.id === id) return node.label;
+    if (Number(node.id) === id) return node.label;
     const child = node.children
       ? findCatalogLabel(node.children, id)
       : undefined;
     if (child) return child;
   }
   return undefined;
+}
+
+/** Chemin racine → nœud (inclus) vers l'id, pour le fil d'ariane. */
+function findCatalogPath(
+  nodes: CatalogNode[],
+  id: number,
+  trail: CatalogNode[] = []
+): CatalogNode[] | null {
+  for (const node of nodes) {
+    const next = [...trail, node];
+    if (Number(node.id) === id) return next;
+    const found = node.children
+      ? findCatalogPath(node.children, id, next)
+      : null;
+    if (found) return found;
+  }
+  return null;
 }

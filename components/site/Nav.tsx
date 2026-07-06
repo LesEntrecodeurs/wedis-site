@@ -41,7 +41,7 @@ export function Nav({
 
           <form
             action="/catalogue"
-            className="mx-auto hidden w-full max-w-xl md:block"
+            className="mx-auto hidden w-full max-w-2xl md:block"
           >
             <div className="flex items-center rounded-full bg-white py-1 pr-1 pl-6">
               <input
