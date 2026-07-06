@@ -85,7 +85,7 @@ export function CatalogueFilters({
   );
 
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-2.5">
+    <div className="mb-6 flex flex-wrap items-center gap-2.5 rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm">
       {/* Catégorie active (posée via le menu navbar) — puce retirable dédiée,
           en plus du « Réinitialiser » global. */}
       {activeCatalogLabel && (
@@ -107,7 +107,7 @@ export function CatalogueFilters({
           value={current.family ?? ALL}
           onValueChange={(v) => apply({ family: v === ALL ? undefined : v })}
         >
-          <SelectTrigger className="w-[190px]">
+          <SelectTrigger className="w-[190px] rounded-full">
             <Layers className="size-4 text-neutral-400" />
             <SelectValue placeholder="Famille" />
           </SelectTrigger>
@@ -127,7 +127,7 @@ export function CatalogueFilters({
           value={current.brand ?? ALL}
           onValueChange={(v) => apply({ brand: v === ALL ? undefined : v })}
         >
-          <SelectTrigger className="w-[190px]">
+          <SelectTrigger className="w-[190px] rounded-full">
             <Tag className="size-4 text-neutral-400" />
             <SelectValue placeholder="Marque" />
           </SelectTrigger>
@@ -157,7 +157,7 @@ export function CatalogueFilters({
           value={pmin}
           onChange={(e) => setPmin(e.target.value)}
           placeholder="Min €"
-          className="field w-[90px]"
+          className="field w-[90px] rounded-full"
           aria-label="Prix minimum"
         />
         <span className="text-neutral-400">–</span>
@@ -168,10 +168,14 @@ export function CatalogueFilters({
           value={pmax}
           onChange={(e) => setPmax(e.target.value)}
           placeholder="Max €"
-          className="field w-[90px]"
+          className="field w-[90px] rounded-full"
           aria-label="Prix maximum"
         />
-        <Button type="submit" variant="outline" size="sm">
+        <Button
+          type="submit"
+          size="sm"
+          className="rounded-full bg-[var(--brand-accent)] px-5 text-white hover:bg-[var(--brand-accent-dark)]"
+        >
           OK
         </Button>
       </form>
@@ -181,7 +185,7 @@ export function CatalogueFilters({
         value={current.sort ?? 'name_asc'}
         onValueChange={(v) => apply({ sort: v })}
       >
-        <SelectTrigger className="ml-auto w-[185px]">
+        <SelectTrigger className="ml-auto w-[185px] rounded-full">
           <ArrowUpDown className="size-4 text-neutral-400" />
           <SelectValue />
         </SelectTrigger>

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, User, Phone } from 'lucide-react';
+import { User, Phone } from 'lucide-react';
 import type { ShopContext, User as SdkUser } from '@extracom/site-kit';
 import { CartLink } from './CartLink';
 import { CatalogDropdown } from './CatalogDropdown';
@@ -43,17 +43,16 @@ export function Nav({
             action="/catalogue"
             className="mx-auto hidden w-full max-w-xl md:block"
           >
-            <div className="flex items-center gap-2 rounded-sm bg-white p-1.5 pl-4">
-              <Search className="size-4 shrink-0 text-neutral-400" />
+            <div className="flex items-center rounded-full bg-white py-1 pr-1 pl-6">
               <input
                 name="q"
                 placeholder="Rechercher..."
                 aria-label="Rechercher dans le catalogue"
-                className="min-w-0 flex-1 bg-transparent text-sm text-neutral-800 outline-none"
+                className="min-w-0 flex-1 bg-transparent text-sm text-neutral-700 outline-none placeholder:text-neutral-400"
               />
               <button
                 type="submit"
-                className="shrink-0 rounded-sm bg-[var(--brand)] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[var(--brand-hover)]"
+                className="shrink-0 rounded-full bg-[var(--brand-accent)] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--brand-accent-dark)]"
               >
                 Rechercher
               </button>
@@ -65,7 +64,7 @@ export function Nav({
               href={user ? '/compte' : '/connexion'}
               className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
             >
-              <User className="size-5" />
+              <User className="size-6 fill-current" strokeWidth={1.5} />
               <span>{firstName ? firstName : 'Espace Client'}</span>
             </Link>
             {user && <CartLink />}
@@ -73,7 +72,7 @@ export function Nav({
               href={`tel:${SITE.phoneHref}`}
               className="hidden flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)] sm:flex"
             >
-              <Phone className="size-5" />
+              <Phone className="size-6 fill-current" strokeWidth={1.5} />
               <span>{SITE.phone}</span>
             </a>
           </div>
