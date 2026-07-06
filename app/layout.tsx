@@ -1,7 +1,7 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { Open_Sans, Roboto_Slab } from 'next/font/google';
+import { Open_Sans } from 'next/font/google';
 import { getContextAction, meAction } from '@extracom/site-kit/server';
 import type { ShopContext, User } from '@extracom/site-kit';
 import { Nav } from '@/components/site/Nav';
@@ -15,12 +15,6 @@ import { SITE } from '@/lib/site';
 const openSans = Open_Sans({
   subsets: ['latin'],
   variable: '--font-open-sans',
-  display: 'swap'
-});
-const robotoSlab = Roboto_Slab({
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  variable: '--font-roboto-slab',
   display: 'swap'
 });
 
@@ -93,7 +87,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="fr" className={`${openSans.variable} ${robotoSlab.variable}`}>
+    <html lang="fr" className={openSans.variable}>
       <body>
         <JsonLd data={businessLd} />
         <Nav context={context} user={user} />

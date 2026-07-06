@@ -19,10 +19,7 @@ export function HomeHero() {
         </h1>
         <p className="mt-5 max-w-xl text-neutral-600">{SITE.subtitle}</p>
 
-        <Link
-          href="/contact"
-          className="mt-7 inline-flex items-center gap-2 rounded-full bg-[var(--brand-accent)] px-7 py-3.5 text-sm font-semibold text-white shadow-md transition hover:bg-[var(--brand)]"
-        >
+        <Link href="/contact" className="btn-teal mt-7">
           Demander une démonstration ou obtenir un devis
           <ArrowRight className="size-4" />
         </Link>
@@ -49,7 +46,7 @@ export function HomeHero() {
           height={620}
           priority
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="w-full rounded-2xl shadow-xl"
+          className="w-full rounded-lg shadow-md"
         />
       </div>
     </section>

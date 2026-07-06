@@ -50,7 +50,7 @@ export function CategoryTiles() {
         <Link
           key={t.title}
           href={t.href}
-          className="group relative flex min-h-44 flex-col justify-between overflow-hidden rounded-2xl p-7 text-white shadow-sm transition hover:shadow-lg"
+          className="group relative flex min-h-44 flex-col justify-between overflow-hidden rounded-lg p-7 text-white transition hover:brightness-105"
           style={{ backgroundColor: t.color }}
         >
           <Image

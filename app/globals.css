@@ -23,11 +23,10 @@
   --brand-accent-light: #6ec1e4;
   --brand-slate: #253237;
 
-  /* Typo Wédis : Open Sans (corps) + Roboto Slab (titres), branchées via
-     next/font/google dans layout.tsx (auto-hébergées au build, sans réseau
-     runtime ni RGPD). Fallbacks système si le fetch échoue au build. */
+  /* Typo Wédis : Open Sans partout (titres compris), comme le site source.
+     Branchée via next/font/google dans layout.tsx (auto-hébergée au build). */
   --font-display:
-    var(--font-roboto-slab), 'Roboto Slab', ui-serif, Georgia, serif;
+    var(--font-open-sans), 'Open Sans', ui-sans-serif, system-ui, sans-serif;
   --font-body:
     var(--font-open-sans), 'Open Sans', ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -37,7 +36,7 @@
    Requis pour que les composants pré-bakés de components/ui rendent
    correctement (bg-background, border-border, text-muted-foreground…). */
 :root {
-  --radius: 0.625rem;
+  --radius: 0.375rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -153,9 +152,8 @@
   h2,
   h3,
   .font-display {
-    font-family: var(--font-display), Georgia, serif;
+    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
     font-optical-sizing: auto;
-    letter-spacing: -0.015em;
   }
 }
 
@@ -175,7 +173,11 @@
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-medium text-neutral-800 transition hover:border-neutral-400 hover:bg-neutral-100 active:scale-[0.98] disabled:opacity-50;
   }
   .card {
-    @apply rounded-2xl border border-neutral-200/80 bg-white transition duration-300 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-[0_10px_40px_-12px_rgb(0_0_0/0.12)];
+    @apply rounded-md border border-neutral-200 bg-white transition duration-200 hover:border-[var(--brand-accent)] hover:shadow-sm;
+  }
+  .btn-teal {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-105;
+    background-image: linear-gradient(135deg, #7bbfbf 0%, #4e9e9e 100%);
   }
   .field {
     @apply w-full rounded-full border border-neutral-300 bg-white px-4 py-2 text-sm transition outline-none focus:border-[var(--brand)] focus:ring-2 focus:ring-[var(--brand-light)];

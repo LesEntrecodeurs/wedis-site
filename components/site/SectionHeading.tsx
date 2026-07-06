@@ -26,11 +26,11 @@ export function SectionHeading({
           {eyebrow}
         </p>
       )}
-      <h2 className="mt-2 text-2xl font-bold text-[var(--brand-slate)] md:text-3xl">
+      <h2 className="mt-2 text-[21px] font-semibold text-[var(--brand-slate)] md:text-2xl">
         {title}
       </h2>
       {intro && (
-        <p className="mt-3 text-base leading-relaxed text-neutral-600">
+        <p className="mt-2 text-[15px] leading-relaxed text-neutral-600">
           {intro}
         </p>
       )}
