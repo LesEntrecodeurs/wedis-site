@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { CheckCircle2 } from 'lucide-react';
 import { PageHero } from '@/components/site/PageHero';
 import { PageFaq } from '@/components/site/PageFaq';
@@ -72,6 +73,16 @@ export default function AProposPage() {
         title="Wédis, votre partenaire en hygiène professionnelle dans le Grand Est depuis plus de 25 ans"
         intro="Depuis 1998, Wédis accompagne les entreprises, collectivités et établissements professionnels dans leurs besoins en hygiène, nettoyage et entretien des locaux, depuis Neuves-Maisons, près de Nancy."
       />
+
+      <section className="container-x">
+        <Image
+          src="/wedis/showroom.jpg"
+          alt="Le showroom Wédis à Neuves-Maisons près de Nancy"
+          width={1200}
+          height={640}
+          className="w-full rounded-2xl object-cover shadow-md"
+        />
+      </section>
 
       <section className="container-x grid gap-12 md:grid-cols-2">
         <div>
