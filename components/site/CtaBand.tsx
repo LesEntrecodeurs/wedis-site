@@ -17,10 +17,7 @@ export function CtaBand({
         <h2 className="max-w-2xl text-2xl font-bold md:text-3xl">{title}</h2>
         <p className="max-w-2xl text-white/85">{text}</p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link
-            href={primary.href}
-            className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-[var(--brand)] transition hover:bg-neutral-100"
-          >
+          <Link href={primary.href} className="btn-teal">
             {primary.label}
           </Link>
           {secondary && (
