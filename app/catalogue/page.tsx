@@ -8,6 +8,7 @@ import {
   meAction,
   getAnonymousArticlesAction,
   getAnonymousContextAction,
+  getAnonymousArticleFieldValuesAction,
   isAuthenticatedAction
 } from '@extracom/site-kit/server';
 import type {
@@ -16,9 +17,13 @@ import type {
   CatalogNode
 } from '@extracom/site-kit';
 import { ArticleCard } from '@/components/site/ArticleCard';
+import { ArticleRow } from '@/components/site/ArticleRow';
+import { ViewToggle, type CatalogueView } from '@/components/site/ViewToggle';
 import { CatalogueFilters } from '@/components/site/CatalogueFilters';
+import { CatalogueSidebar } from '@/components/site/CatalogueSidebar';
 import { InfoBanner } from '@/components/site/InfoBanner';
 import { EmptyState } from '@/components/site/EmptyState';
+import { BRAND_FIELD } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +38,11 @@ const cachedAnonArticles = unstable_cache(
 const cachedAnonContext = unstable_cache(
   () => getAnonymousContextAction(),
   ['catalogue-anon-context'],
+  { revalidate: 600, tags: ['catalogue'] }
+);
+const cachedBrands = unstable_cache(
+  () => getAnonymousArticleFieldValuesAction(BRAND_FIELD),
+  ['marques-list'],
   { revalidate: 600, tags: ['catalogue'] }
 );
 
@@ -63,6 +73,8 @@ export default async function CataloguePage({
     sort?: string;
     pmin?: string;
     pmax?: string;
+    brand?: string;
+    view?: string;
   }>;
 }) {
   const sp = await searchParams;
@@ -72,6 +84,8 @@ export default async function CataloguePage({
   const sort = (sp.sort as ArticleSort | undefined) || undefined;
   const minPrice = sp.pmin ? Number(sp.pmin) : undefined;
   const maxPrice = sp.pmax ? Number(sp.pmax) : undefined;
+  const brand = sp.brand || undefined;
+  const view: CatalogueView = sp.view === 'list' ? 'list' : 'grid';
 
   const articlesQuery: ArticleListQuery = {
     search,
@@ -82,17 +96,19 @@ export default async function CataloguePage({
     familyCode: sp.family || undefined,
     sort,
     minPrice: Number.isFinite(minPrice) ? minPrice : undefined,
-    maxPrice: Number.isFinite(maxPrice) ? maxPrice : undefined
+    maxPrice: Number.isFinite(maxPrice) ? maxPrice : undefined,
+    fieldFilters: brand ? [{ name: BRAND_FIELD, value: brand }] : undefined
   };
 
   // Connecté → données FRAÎCHES (prix client). Anonyme → cache (ISR).
   const authed = await isAuthenticatedAction();
-  const [res, context, user] = await Promise.all([
+  const [res, context, user, brands] = await Promise.all([
     authed
       ? getArticlesAction(articlesQuery)
       : cachedAnonArticles(articlesQuery),
     (authed ? getContextAction() : cachedAnonContext()).catch(() => null),
-    authed ? meAction().catch(() => null) : Promise.resolve(null)
+    authed ? meAction().catch(() => null) : Promise.resolve(null),
+    cachedBrands().catch(() => [] as string[])
   ]);
 
   const families = context?.families ?? [];
@@ -115,30 +131,14 @@ export default async function CataloguePage({
     if (sp.sort) params.set('sort', sp.sort);
     if (sp.pmin) params.set('pmin', sp.pmin);
     if (sp.pmax) params.set('pmax', sp.pmax);
+    if (brand) params.set('brand', brand);
+    if (sp.view) params.set('view', sp.view);
     params.set('page', String(p));
     return `/catalogue?${params.toString()}`;
   };
 
   return (
     <div>
-      <form className="mb-4">
-        <input
-          name="q"
-          defaultValue={search}
-          placeholder="Rechercher un article…"
-          aria-label="Rechercher un article"
-          className="field max-w-md"
-        />
-        {sp.catalog && (
-          <input type="hidden" name="catalog" value={sp.catalog} />
-        )}
-        {sp.clevel && <input type="hidden" name="clevel" value={sp.clevel} />}
-        {sp.family && <input type="hidden" name="family" value={sp.family} />}
-        {sp.sort && <input type="hidden" name="sort" value={sp.sort} />}
-        {sp.pmin && <input type="hidden" name="pmin" value={sp.pmin} />}
-        {sp.pmax && <input type="hidden" name="pmax" value={sp.pmax} />}
-      </form>
-
       {/* Onboarding visiteur anonyme : les tarifs s'affichent après connexion. */}
       {!user && (
         <div className="mb-4">
@@ -151,8 +151,40 @@ export default async function CataloguePage({
         </div>
       )}
 
-      <CatalogueFilters
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
+        <aside className="lg:sticky lg:top-4 lg:w-60 lg:shrink-0">
+          <CatalogueSidebar
+            categories={context?.catalogTree ?? []}
+            activeId={activeCatalogId}
+          />
+        </aside>
+
+        <div className="min-w-0 flex-1">
+          <form className="mb-4">
+            <input
+              name="q"
+              defaultValue={search}
+              placeholder="Rechercher un article…"
+              aria-label="Rechercher un article"
+              className="field max-w-md"
+            />
+            {sp.catalog && (
+              <input type="hidden" name="catalog" value={sp.catalog} />
+            )}
+            {sp.clevel && (
+              <input type="hidden" name="clevel" value={sp.clevel} />
+            )}
+            {sp.family && (
+              <input type="hidden" name="family" value={sp.family} />
+            )}
+            {sp.sort && <input type="hidden" name="sort" value={sp.sort} />}
+            {sp.pmin && <input type="hidden" name="pmin" value={sp.pmin} />}
+            {sp.pmax && <input type="hidden" name="pmax" value={sp.pmax} />}
+          </form>
+
+          <CatalogueFilters
         families={families}
+        brands={brands}
         activeCatalogLabel={activeCatalogLabel}
         current={{
           q: search,
@@ -161,16 +193,23 @@ export default async function CataloguePage({
           clevel: sp.clevel,
           sort: sp.sort,
           pmin: sp.pmin,
-          pmax: sp.pmax
+          pmax: sp.pmax,
+          brand
         }}
       />
 
-      {total > 0 && (
-        <p className="mb-3 text-sm text-neutral-500">
-          {total} article{total > 1 ? 's' : ''}
-          {activeCatalogLabel ? ` dans « ${activeCatalogLabel} »` : ''}
+      <div className="mb-3 flex items-center justify-between gap-4">
+        <p className="text-sm text-neutral-500">
+          {total > 0 && (
+            <>
+              {total} article{total > 1 ? 's' : ''}
+              {brand ? ` de la marque « ${brand} »` : ''}
+              {activeCatalogLabel ? ` dans « ${activeCatalogLabel} »` : ''}
+            </>
+          )}
         </p>
-      )}
+        <ViewToggle view={view} />
+      </div>
 
       {res.data.length === 0 ? (
         <EmptyState
@@ -179,6 +218,12 @@ export default async function CataloguePage({
           description="Aucun article ne correspond à votre recherche. Essayez d'autres filtres."
           action={{ label: 'Réinitialiser', href: '/catalogue' }}
         />
+      ) : view === 'list' ? (
+        <div className="flex flex-col gap-3">
+          {res.data.map((a) => (
+            <ArticleRow key={a.reference} article={a} />
+          ))}
+        </div>
       ) : (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {res.data.map((a) => (
@@ -198,6 +243,8 @@ export default async function CataloguePage({
           )}
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 }

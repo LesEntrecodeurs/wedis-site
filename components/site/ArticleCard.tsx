@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatPrice, type Article } from '@extracom/site-kit';
+import { getBrand, brandHref } from '@/lib/brand';
 import { AddToCart } from './AddToCart';
 
 export function ArticleCard({ article }: { article: Article }) {
   const href = `/produit/${encodeURIComponent(article.reference)}`;
+  const brand = getBrand(article);
   const hasVariants = (article.gammes ?? []).some((g) => g.items.length > 0);
   const hasPromo =
     article.promotion != null &&
@@ -32,6 +34,14 @@ export function ArticleCard({ article }: { article: Article }) {
       </Link>
 
       <div className="flex flex-1 flex-col p-3">
+        {brand && (
+          <Link
+            href={brandHref(brand)}
+            className="text-xs font-semibold tracking-wide text-neutral-400 uppercase hover:text-[var(--brand)]"
+          >
+            {brand}
+          </Link>
+        )}
         <Link href={href}>
           <h3 className="line-clamp-2 text-sm leading-snug font-medium hover:text-[var(--brand-dark)]">
             {article.title}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUpDown, Layers, X } from 'lucide-react';
+import { ArrowUpDown, Layers, Tag, X } from 'lucide-react';
 import type { ArticleSort, Family } from '@extracom/site-kit';
 import {
   Select,
@@ -23,6 +23,8 @@ interface Current {
   /** Fourchette de prix (sur le prix de base). */
   pmin?: string;
   pmax?: string;
+  /** Marque (champ libre, filtré côté serveur). */
+  brand?: string;
 }
 
 const ALL = 'all'; // Radix interdit les <SelectItem value="">.
@@ -42,10 +44,13 @@ const SORTS: { value: ArticleSort; label: string }[] = [
  */
 export function CatalogueFilters({
   families,
+  brands,
   current,
   activeCatalogLabel
 }: {
   families: Family[];
+  /** Marques du catalogue (champ libre) pour le select. */
+  brands: string[];
   current: Current;
   /** Libellé résolu du catalogue actif (posé via le menu navbar), si présent. */
   activeCatalogLabel?: string;
@@ -66,6 +71,7 @@ export function CatalogueFilters({
     if (next.sort) p.set('sort', next.sort);
     if (next.pmin) p.set('pmin', next.pmin);
     if (next.pmax) p.set('pmax', next.pmax);
+    if (next.brand) p.set('brand', next.brand);
     const qs = p.toString();
     router.push(qs ? `/catalogue?${qs}` : '/catalogue');
   };
@@ -73,6 +79,7 @@ export function CatalogueFilters({
   const hasActiveFilter = !!(
     current.family ||
     current.catalog ||
+    current.brand ||
     current.pmin ||
     current.pmax
   );
@@ -109,6 +116,26 @@ export function CatalogueFilters({
             {families.map((f) => (
               <SelectItem key={f.code} value={f.code}>
                 {f.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+
+      {brands.length > 0 && (
+        <Select
+          value={current.brand ?? ALL}
+          onValueChange={(v) => apply({ brand: v === ALL ? undefined : v })}
+        >
+          <SelectTrigger className="w-[190px]">
+            <Tag className="size-4 text-neutral-400" />
+            <SelectValue placeholder="Marque" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL}>Toutes les marques</SelectItem>
+            {brands.map((b) => (
+              <SelectItem key={b} value={b}>
+                {b}
               </SelectItem>
             ))}
           </SelectContent>
@@ -179,6 +206,7 @@ export function CatalogueFilters({
               family: undefined,
               catalog: undefined,
               clevel: undefined,
+              brand: undefined,
               pmin: undefined,
               pmax: undefined
             });
