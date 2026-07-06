@@ -35,6 +35,14 @@ Détail complet d'un article (prix/stock/promo, déclinaisons, glossaires, fiche
 useArticle: (reference: string) => QueryState<Article> & { reload: () => void; }
 ```
 
+### `useArticleFieldValues`
+
+Valeurs distinctes d'un **champ libre** d'article (ex. `'Marque'`) sur tout le catalogue — pour peupler une liste de filtres (marques). `baseQuery` restreint le périmètre. Récupère l'ensemble du catalogue puis agrège côté serveur. Renvoie `{ data, isLoading, error, reload }`.
+
+```ts
+useArticleFieldValues: (field: string, baseQuery?: ArticleListQuery) => QueryState<string[]> & { reload: () => void; }
+```
+
 ### `useArticles`
 
 Liste paginée d'articles (recherche, filtres famille/catalogue/prix, tri). Re-fetch quand `query` change. Le prix de chaque article peut être `null` (anonyme + shop en prix masqué). Renvoie `{ data, isLoading, error, reload }`.
@@ -178,6 +186,12 @@ getActiveCompanyAction: () => Promise<string | null>
 getAnonymousArticleAction: (reference: string) => Promise<Article>
 ```
 
+### `getAnonymousArticleFieldValuesAction`
+
+```ts
+getAnonymousArticleFieldValuesAction: (field: string, baseQuery?: ArticleListQuery) => Promise<string[]>
+```
+
 ### `getAnonymousArticlesAction`
 
 ```ts
@@ -194,6 +208,14 @@ getAnonymousContextAction: () => Promise<ShopContext>
 
 ```ts
 getArticleAction: (reference: string) => Promise<Article>
+```
+
+### `getArticleFieldValuesAction`
+
+Valeurs distinctes d'un champ libre d'article (ex. `'Marque'`) sur tout le catalogue — pour construire une liste de filtres (marques). `baseQuery` restreint éventuellement le périmètre.
+
+```ts
+getArticleFieldValuesAction: (field: string, baseQuery?: ArticleListQuery) => Promise<string[]>
 ```
 
 ### `getArticlesAction`
