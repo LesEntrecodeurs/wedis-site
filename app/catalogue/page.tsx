@@ -207,28 +207,6 @@ export default async function CataloguePage({
             )}
           </nav>
 
-          <form className="mb-4">
-            <input
-              name="q"
-              defaultValue={search}
-              placeholder="Rechercher un article…"
-              aria-label="Rechercher un article"
-              className="field max-w-md"
-            />
-            {sp.catalog && (
-              <input type="hidden" name="catalog" value={sp.catalog} />
-            )}
-            {sp.clevel && (
-              <input type="hidden" name="clevel" value={sp.clevel} />
-            )}
-            {sp.family && (
-              <input type="hidden" name="family" value={sp.family} />
-            )}
-            {sp.sort && <input type="hidden" name="sort" value={sp.sort} />}
-            {sp.pmin && <input type="hidden" name="pmin" value={sp.pmin} />}
-            {sp.pmax && <input type="hidden" name="pmax" value={sp.pmax} />}
-          </form>
-
           <CatalogueFilters
         brands={brands}
         activeCatalogLabel={activeCatalogLabel}
