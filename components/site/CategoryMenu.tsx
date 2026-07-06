@@ -43,7 +43,7 @@ function ChevronRight() {
  * Tailwind résolvent au plus proche ancêtre), donc les ancêtres restent ouverts
  * tant qu'on survole la cascade.
  */
-function CatalogBranch({ node }: { node: CatalogNode }) {
+export function CatalogBranch({ node }: { node: CatalogNode }) {
   const children = node.children ?? [];
   const hasChildren = children.length > 0;
 

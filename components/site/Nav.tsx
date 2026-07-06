@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, ChevronDown, Search, User, Phone } from 'lucide-react';
+import { Search, User, Phone } from 'lucide-react';
 import type { ShopContext, User as SdkUser } from '@extracom/site-kit';
 import { CartLink } from './CartLink';
+import { CatalogDropdown } from './CatalogDropdown';
 import { SITE } from '@/lib/site';
 
 const MENU: [string, string][] = [
@@ -20,13 +21,13 @@ export function Nav({
   context: ShopContext | null;
   user?: SdkUser | null;
 }) {
-  void context;
+  const categories = context?.catalogTree ?? [];
   const firstName = user?.name?.split(' ')[0];
 
   return (
     <header className="sticky top-0 z-30">
       <div className="bg-[var(--brand)] text-white">
-        <div className="container-x flex items-center gap-4 py-4">
+        <div className="container-x flex items-center gap-4 py-[18px]">
           <Link href="/" className="shrink-0">
             <Image
               src="/wedis/logo-white.png"
@@ -34,7 +35,7 @@ export function Nav({
               width={200}
               height={126}
               priority
-              className="h-14 w-auto"
+              className="h-[86px] w-auto"
             />
           </Link>
 
@@ -42,7 +43,7 @@ export function Nav({
             action="/catalogue"
             className="mx-auto hidden w-full max-w-xl md:block"
           >
-            <div className="flex items-center gap-2 rounded-full bg-white p-1.5 pl-4">
+            <div className="flex items-center gap-2 rounded-sm bg-white p-1.5 pl-4">
               <Search className="size-4 shrink-0 text-neutral-400" />
               <input
                 name="q"
@@ -52,7 +53,7 @@ export function Nav({
               />
               <button
                 type="submit"
-                className="shrink-0 rounded-full bg-[var(--brand)] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[var(--brand-dark)]"
+                className="shrink-0 rounded-sm bg-[var(--brand)] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[var(--brand-hover)]"
               >
                 Rechercher
               </button>
@@ -62,7 +63,7 @@ export function Nav({
           <div className="ml-auto flex items-center gap-6">
             <Link
               href={user ? '/compte' : '/connexion'}
-              className="flex flex-col items-center gap-0.5 text-xs transition hover:opacity-80"
+              className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
             >
               <User className="size-5" />
               <span>{firstName ? firstName : 'Espace Client'}</span>
@@ -70,7 +71,7 @@ export function Nav({
             {user && <CartLink />}
             <a
               href={`tel:${SITE.phoneHref}`}
-              className="hidden flex-col items-center gap-0.5 text-xs transition hover:opacity-80 sm:flex"
+              className="hidden flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)] sm:flex"
             >
               <Phone className="size-5" />
               <span>{SITE.phone}</span>
@@ -79,16 +80,9 @@ export function Nav({
         </div>
       </div>
 
-      <div className="border-t border-white/10 bg-[var(--brand-dark)] text-white">
-        <div className="container-x flex items-center gap-1 overflow-x-auto">
-          <Link
-            href="/catalogue"
-            className="flex shrink-0 items-center gap-2 border-r border-white/10 py-3 pr-5 text-sm font-semibold"
-          >
-            <Menu className="size-4" />
-            Toutes les catégories
-            <ChevronDown className="size-4" />
-          </Link>
+      <div className="border-t border-white/10 bg-[var(--brand)] text-white">
+        <div className="container-x flex items-center gap-1">
+          <CatalogDropdown categories={categories} />
           <nav className="flex items-center">
             {MENU.map(([label, href]) => (
               <Link
