@@ -8,12 +8,12 @@ export type IconListItem = {
   href?: string;
 };
 
-// Cadre bordé unique, items en 2 colonnes (icône outline + titre + texte).
+// Cadre bordé unique, items en 3 colonnes (icône outline + titre + texte).
 // Reproduit les blocs « Nos services » et « Pourquoi choisir Wédis ? ».
 export function IconListBox({ items }: { items: IconListItem[] }) {
   return (
     <div className="rounded-sm border border-neutral-200 bg-white p-6 md:p-10">
-      <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
+      <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2 md:grid-cols-3">
         {items.map((it) => {
           const inner = (
             <div className="flex gap-4">

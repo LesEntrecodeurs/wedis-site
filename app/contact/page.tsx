@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { ContactForm } from '@/components/site/ContactForm';
+import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -51,23 +52,23 @@ export default function ContactPage() {
   );
 }
 
-// ⤵ Coordonnées à personnaliser pour le shop.
+// ⤵ Coordonnées réelles Wédis (source unique : SITE).
 const coordonnees = [
   {
     label: 'Email',
-    value: 'contact@exemple.fr',
-    href: 'mailto:contact@exemple.fr',
+    value: SITE.email,
+    href: `mailto:${SITE.email}`,
     icon: <Mail className="size-6" />
   },
   {
     label: 'Téléphone',
-    value: '01 23 45 67 89',
-    href: 'tel:+33123456789',
+    value: SITE.phone,
+    href: `tel:${SITE.phoneHref}`,
     icon: <Phone className="size-6" />
   },
   {
     label: 'Adresse',
-    value: '1 rue de l’Exemple, 75000 Paris',
+    value: `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`,
     href: undefined,
     icon: <MapPin className="size-6" />
   }

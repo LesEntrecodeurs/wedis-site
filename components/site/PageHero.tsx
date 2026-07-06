@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -33,16 +34,16 @@ export function PageHero({
           {trail.map((c, i) => {
             const last = i === trail.length - 1;
             return (
-              <BreadcrumbItem key={`${c.label}-${i}`}>
-                {last || !c.href ? (
-                  <BreadcrumbPage>{c.label}</BreadcrumbPage>
-                ) : (
-                  <>
+              <Fragment key={`${c.label}-${i}`}>
+                <BreadcrumbItem>
+                  {last || !c.href ? (
+                    <BreadcrumbPage>{c.label}</BreadcrumbPage>
+                  ) : (
                     <BreadcrumbLink href={c.href}>{c.label}</BreadcrumbLink>
-                    <BreadcrumbSeparator />
-                  </>
-                )}
-              </BreadcrumbItem>
+                  )}
+                </BreadcrumbItem>
+                {!last && <BreadcrumbSeparator />}
+              </Fragment>
             );
           })}
         </BreadcrumbList>
