@@ -24,7 +24,7 @@ export function CatalogDropdown({
 
       {categories.length > 0 && (
         <div className="absolute top-full left-0 z-40 hidden min-w-[300px] pt-1 group-hover/all:block">
-          <div className="max-h-[70vh] overflow-y-auto rounded-sm border border-neutral-200 bg-white p-2 shadow-xl">
+          <div className="rounded-sm border border-neutral-200 bg-white p-2 shadow-xl">
             {categories.map((cat) => (
               <CatalogBranch key={cat.id} node={cat} />
             ))}
