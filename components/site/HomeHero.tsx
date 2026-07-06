@@ -46,7 +46,7 @@ export function HomeHero() {
           height={620}
           priority
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="w-full rounded-lg shadow-md"
+          className="w-full rounded-sm shadow-md"
         />
       </div>
     </section>

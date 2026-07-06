@@ -17,7 +17,7 @@ const TILES: Tile[] = [
     title: 'Matériels de nettoyage',
     subtitle: 'Autolaveuses, aspirateurs, robots et balayeuses',
     href: '/catalogue',
-    color: 'var(--brand-accent)',
+    color: '#5aa8cc',
     image: '/wedis/tiles/materiels.png'
   },
   {
@@ -38,7 +38,7 @@ const TILES: Tile[] = [
     title: 'Chariots et systèmes',
     subtitle: 'Chariots de ménage, de lavage et de désinfection',
     href: '/catalogue',
-    color: 'var(--brand-accent)',
+    color: '#5aa8cc',
     image: '/wedis/tiles/chariots.png'
   }
 ];
@@ -50,7 +50,7 @@ export function CategoryTiles() {
         <Link
           key={t.title}
           href={t.href}
-          className="group relative flex min-h-44 flex-col justify-between overflow-hidden rounded-lg p-7 text-white transition hover:brightness-105"
+          className="group relative flex min-h-44 flex-col justify-between overflow-hidden rounded-sm p-7 text-white transition hover:brightness-110"
           style={{ backgroundColor: t.color }}
         >
           <Image

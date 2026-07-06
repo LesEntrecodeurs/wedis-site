@@ -12,7 +12,7 @@ export type IconListItem = {
 // Reproduit les blocs « Nos services » et « Pourquoi choisir Wédis ? ».
 export function IconListBox({ items }: { items: IconListItem[] }) {
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-6 md:p-10">
+    <div className="rounded-sm border border-neutral-200 bg-white p-6 md:p-10">
       <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
         {items.map((it) => {
           const inner = (
