@@ -51,18 +51,18 @@ export function CatalogBranch({ node }: { node: CatalogNode }) {
     <div className="group/cat relative">
       <Link
         href={catHref(node)}
-        className="flex items-center justify-between gap-3 rounded px-3 py-1.5 text-sm text-neutral-700 group-hover/cat:bg-neutral-100 hover:bg-neutral-100 hover:text-[var(--brand-dark)]"
+        className="flex items-center justify-between gap-4 rounded-sm px-4 py-2.5 text-sm whitespace-nowrap text-neutral-700 transition-colors group-hover/cat:bg-[var(--brand-light)] group-hover/cat:text-[var(--brand-dark)] hover:bg-[var(--brand-light)] hover:text-[var(--brand-dark)]"
       >
-        <span className="truncate">{node.label}</span>
+        <span>{node.label}</span>
         {hasChildren && <ChevronRight />}
       </Link>
 
       {hasChildren && (
-        <div className="absolute top-0 left-full z-40 hidden min-w-[220px] pl-1 group-hover/cat:block">
-          <div className="rounded-lg border border-neutral-200 bg-white p-2 shadow-lg">
+        <div className="invisible absolute top-0 left-full z-50 min-w-[250px] translate-x-1 pl-1 opacity-0 transition duration-150 ease-out group-hover/cat:visible group-hover/cat:translate-x-0 group-hover/cat:opacity-100">
+          <div className="rounded-sm border border-neutral-200 bg-white p-1.5 shadow-xl">
             <Link
               href={catHref(node)}
-              className="block rounded px-3 py-1.5 text-sm font-medium text-[var(--brand-dark)] hover:bg-[var(--brand-light)]"
+              className="block rounded-sm px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-[var(--brand-dark)] hover:bg-[var(--brand-light)]"
             >
               Tout « {node.label} »
             </Link>
@@ -111,7 +111,7 @@ export function CategoryMenu({ categories }: { categories: CatalogNode[] }) {
               </Link>
 
               {hasChildren && (
-                <div className="absolute top-full left-0 z-30 hidden min-w-[240px] pt-1 group-hover/top:block">
+                <div className="invisible absolute top-full left-0 z-40 min-w-[240px] -translate-y-1 pt-1 opacity-0 transition duration-150 ease-out group-hover/top:visible group-hover/top:translate-y-0 group-hover/top:opacity-100">
                   <div className="rounded-lg border border-neutral-200 bg-white p-2 shadow-lg">
                     <Link
                       href={catHref(cat)}

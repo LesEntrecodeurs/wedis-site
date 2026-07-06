@@ -1,4 +1,5 @@
 import type { Article } from '@extracom/site-kit';
+import { BRAND_LOGO_SLUGS } from '@/data/brand-logos';
 
 // Nom du champ libre portant la marque (info-libre Sage « Marque »).
 export const BRAND_FIELD = 'Marque';
@@ -23,4 +24,19 @@ export function brandSlug(name: string): string {
 /** Lien vers le catalogue filtré sur une marque. */
 export function brandHref(name: string): string {
   return `/catalogue?brand=${encodeURIComponent(name)}`;
+}
+
+/**
+ * Chemin du logo d'une marque (public/wedis/marques/…), ou undefined si aucun.
+ * Match exact sur le slug, puis approché (« celtex » → « celtex-france »).
+ */
+export function brandLogo(name: string): string | undefined {
+  const slug = brandSlug(name);
+  if (!slug) return undefined;
+  const match =
+    (BRAND_LOGO_SLUGS.includes(slug) && slug) ||
+    BRAND_LOGO_SLUGS.find(
+      (s) => s.startsWith(`${slug}-`) || slug.startsWith(`${s}-`)
+    );
+  return match ? `/wedis/marques/${match}.jpg` : undefined;
 }

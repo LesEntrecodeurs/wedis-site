@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { unstable_cache } from 'next/cache';
 import { ArrowRight } from 'lucide-react';
 import { getAnonymousArticleFieldValuesAction } from '@extracom/site-kit/server';
 import { PageHero } from '@/components/site/PageHero';
 import { CtaBand } from '@/components/site/CtaBand';
 import { SectionHeading } from '@/components/site/SectionHeading';
-import { BRAND_FIELD, brandHref } from '@/lib/brand';
+import { BRAND_FIELD, brandHref, brandLogo } from '@/lib/brand';
 
 export const metadata: Metadata = {
   title: 'Nos marques partenaires de matériel de nettoyage professionnel',
@@ -46,21 +47,36 @@ export default async function MarquesPage() {
           </p>
         ) : (
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {brands.map((brand) => (
-              <Link
-                key={brand}
-                href={brandHref(brand)}
-                className="card group flex flex-col items-center justify-center gap-3 p-6 text-center"
-              >
-                <span className="text-lg font-bold tracking-wide text-[var(--brand-slate)] uppercase">
-                  {brand}
-                </span>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-[var(--brand)] group-hover:gap-2">
-                  Voir les produits
-                  <ArrowRight className="size-4 transition-all" />
-                </span>
-              </Link>
-            ))}
+            {brands.map((brand) => {
+              const logo = brandLogo(brand);
+              return (
+                <Link
+                  key={brand}
+                  href={brandHref(brand)}
+                  className="card group flex flex-col items-center justify-center gap-3 p-6 text-center"
+                >
+                  <span className="relative flex h-16 w-full items-center justify-center">
+                    {logo ? (
+                      <Image
+                        src={logo}
+                        alt={`Logo ${brand}`}
+                        fill
+                        sizes="200px"
+                        className="object-contain"
+                      />
+                    ) : (
+                      <span className="text-lg font-bold tracking-wide text-[var(--brand-slate)] uppercase">
+                        {brand}
+                      </span>
+                    )}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-sm font-medium text-[var(--brand)] group-hover:gap-2">
+                    Voir les produits
+                    <ArrowRight className="size-4 transition-all" />
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>
