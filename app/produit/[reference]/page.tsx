@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { unstable_cache } from 'next/cache';
 import Image from 'next/image';
 import {
@@ -9,6 +10,8 @@ import {
 import { formatPrice, type Article } from '@extracom/site-kit';
 import { BuyBox } from '@/components/site/BuyBox';
 import { JsonLd } from '@/components/site/JsonLd';
+import { COMMERCE_ENABLED } from '@/lib/config';
+import { getBrand, brandHref } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
@@ -98,6 +101,14 @@ export default async function ProduitPage({
       </div>
 
       <div>
+        {getBrand(article) && (
+          <Link
+            href={brandHref(getBrand(article) as string)}
+            className="text-sm font-semibold tracking-wide text-neutral-400 uppercase hover:text-[var(--brand)]"
+          >
+            {getBrand(article)}
+          </Link>
+        )}
         <h1 className="text-2xl font-bold">{article.title}</h1>
         <p className="mt-1 text-sm text-neutral-500">
           Réf. {article.reference}
@@ -153,13 +164,27 @@ export default async function ProduitPage({
           </p>
         )}
 
-        {/* Déclinaisons (gamme) + ajout au panier */}
+        {/* Vitrine : CTA devis. E-commerce : déclinaisons + ajout au panier. */}
         <div className="mt-6">
-          <BuyBox
-            reference={article.reference}
-            gammes={article.gammes}
-            priceHidden={article.price == null}
-          />
+          {COMMERCE_ENABLED ? (
+            <BuyBox
+              reference={article.reference}
+              gammes={article.gammes}
+              priceHidden={article.price == null}
+            />
+          ) : (
+            <div className="max-w-sm space-y-2">
+              <Link
+                href={`/contact?ref=${encodeURIComponent(article.reference)}`}
+                className="btn-primary flex w-full items-center justify-center"
+              >
+                Demander un devis
+              </Link>
+              <p className="text-xs text-neutral-500">
+                Réponse sous 24h ouvrées — conseil et démonstration sur demande.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Caractéristiques */}

@@ -5,6 +5,7 @@ import type { ShopContext, User as SdkUser } from '@extracom/site-kit';
 import { CartLink } from './CartLink';
 import { CatalogDropdown } from './CatalogDropdown';
 import { SITE } from '@/lib/site';
+import { COMMERCE_ENABLED, EXTRACOM_CLIENT_URL } from '@/lib/config';
 
 const MENU: [string, string][] = [
   ['Qui sommes-nous ?', '/a-propos'],
@@ -60,14 +61,16 @@ export function Nav({
           </form>
 
           <div className="ml-auto flex items-center gap-6">
-            <Link
-              href={user ? '/compte' : '/connexion'}
+            <a
+              href={EXTRACOM_CLIENT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
             >
               <User className="size-6 fill-current" strokeWidth={1.5} />
               <span>{firstName ? firstName : 'Espace Client'}</span>
-            </Link>
-            {user && <CartLink />}
+            </a>
+            {COMMERCE_ENABLED && user && <CartLink />}
             <a
               href={`tel:${SITE.phoneHref}`}
               className="hidden flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)] sm:flex"

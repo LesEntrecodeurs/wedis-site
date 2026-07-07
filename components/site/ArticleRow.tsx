@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { formatPrice, type Article } from '@extracom/site-kit';
 import { getBrand, brandHref } from '@/lib/brand';
+import { COMMERCE_ENABLED } from '@/lib/config';
 import { AddToCart } from './AddToCart';
 
 // Variante « liste » de la carte produit : image à gauche, infos au centre,
@@ -95,7 +96,14 @@ export function ArticleRow({ article }: { article: Article }) {
           </div>
         )}
         <div className="w-full">
-          {hasVariants ? (
+          {!COMMERCE_ENABLED ? (
+            <Link
+              href={href}
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--brand)] px-4 py-2 text-sm font-medium text-[var(--brand-dark)] hover:bg-[var(--brand-light)]"
+            >
+              Voir le produit
+            </Link>
+          ) : hasVariants ? (
             <Link
               href={href}
               className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--brand)] px-4 py-2 text-sm font-medium text-[var(--brand-dark)] hover:bg-[var(--brand-light)]"
