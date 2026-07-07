@@ -48,25 +48,18 @@ export function CatalogBranch({ node }: { node: CatalogNode }) {
   const hasChildren = children.length > 0;
 
   return (
-    <div className="group/cat relative">
+    <div className="cat-node relative">
       <Link
         href={catHref(node)}
-        className="flex items-center justify-between gap-4 rounded-sm px-4 py-2.5 text-sm whitespace-nowrap text-neutral-700 transition-colors group-hover/cat:bg-[var(--brand-light)] group-hover/cat:text-[var(--brand-dark)] hover:bg-[var(--brand-light)] hover:text-[var(--brand-dark)]"
+        className="flex items-center justify-between gap-4 rounded-sm px-4 py-2.5 text-sm whitespace-nowrap text-neutral-700 transition-colors hover:bg-[var(--brand-light)] hover:text-[var(--brand-dark)]"
       >
         <span>{node.label}</span>
         {hasChildren && <ChevronRight />}
       </Link>
 
       {hasChildren && (
-        <div className="invisible absolute top-0 left-full z-50 min-w-[250px] translate-x-1 pl-1 opacity-0 transition duration-150 ease-out group-hover/cat:visible group-hover/cat:translate-x-0 group-hover/cat:opacity-100">
+        <div className="cat-flyout absolute top-0 left-full z-50 min-w-[250px] pl-1">
           <div className="rounded-sm border border-neutral-200 bg-white p-1.5 shadow-xl">
-            <Link
-              href={catHref(node)}
-              className="block rounded-sm px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-[var(--brand-dark)] hover:bg-[var(--brand-light)]"
-            >
-              Tout « {node.label} »
-            </Link>
-            <div className="my-1 border-t border-neutral-100" />
             {children.map((sub) => (
               <CatalogBranch key={sub.id} node={sub} />
             ))}

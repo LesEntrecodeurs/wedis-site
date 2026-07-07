@@ -246,3 +246,14 @@
     animation: none;
   }
 }
+
+/* Menu catalogue en cascade : flyouts isolés par enfant DIRECT (`>`).
+   Survoler un noeud ouvre uniquement SON flyout ; les ancêtres restent ouverts
+   (le hover remonte), les cousins restent fermés. Évite le bug des groupes
+   Tailwind imbriqués homonymes (sélecteur descendant → ouvrait tout). */
+.cat-node > .cat-flyout {
+  display: none;
+}
+.cat-node:hover > .cat-flyout {
+  display: block;
+}
