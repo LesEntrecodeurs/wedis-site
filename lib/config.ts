@@ -1,16 +1,23 @@
 /**
  * Réglages d'affichage du site.
  *
- * `COMMERCE_ENABLED` — porte de sortie : `false` = **vitrine pure** (aucun
- * panier ni prise de commande affichés), `true` = e-commerce complet (panier +
- * commande, déjà câblé via le kit). Basculer à `true` réactive tout le circuit
- * sans rien réécrire — le code du panier/commande reste en place.
+ * `COMMERCE_ENABLED` — porte de sortie : `false` = **vitrine** (pas de panier
+ * interne ; la commande se fait sur le portail Extracom), `true` = e-commerce
+ * complet en propre (panier + commande via le kit, déjà câblé). Basculer à
+ * `true` réactive tout le circuit sans rien réécrire.
  */
 export const COMMERCE_ENABLED = false;
 
-/**
- * Espace client : portail Extracom (externe) tant que la vitrine ne gère pas de
- * compte en propre. Surchargeable via `NEXT_PUBLIC_EXTRACOM_CLIENT_URL`.
- */
+/** Portail client/commande Extracom (externe). Surchargeable par env. */
 export const EXTRACOM_CLIENT_URL =
-  process.env.NEXT_PUBLIC_EXTRACOM_CLIENT_URL ?? 'https://api.extracom.fr';
+  process.env.NEXT_PUBLIC_EXTRACOM_CLIENT_URL ?? 'https://wedis.extracom.fr';
+
+/** Code shop Extracom (segment d'URL du portail). */
+const EXTRACOM_SHOP = process.env.NEXT_PUBLIC_EXTRACOM_SHOP ?? 'WEDIS';
+
+/** Lien de commande d'un article sur le portail Extracom (comme wedis.fr). */
+export function extracomOrderUrl(reference: string): string {
+  return `${EXTRACOM_CLIENT_URL}/${EXTRACOM_SHOP}?limit=25&page=1&artRef=${encodeURIComponent(
+    reference
+  )}`;
+}

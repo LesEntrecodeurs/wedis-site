@@ -26,6 +26,7 @@ import { InfoBanner } from '@/components/site/InfoBanner';
 import { EmptyState } from '@/components/site/EmptyState';
 import { BRAND_FIELD, brandLogo, brandDescription } from '@/lib/brand';
 import { BrandDescription } from '@/components/site/BrandDescription';
+import { COMMERCE_ENABLED } from '@/lib/config';
 
 export const dynamic = 'force-dynamic';
 
@@ -145,8 +146,8 @@ export default async function CataloguePage({
 
   return (
     <div>
-      {/* Onboarding visiteur anonyme : les tarifs s'affichent après connexion. */}
-      {!user && (
+      {/* Onboarding tarifs : uniquement en mode e-commerce (masqué en vitrine). */}
+      {COMMERCE_ENABLED && !user && (
         <div className="mb-4">
           <InfoBanner
             icon={<Lock className="size-4" />}

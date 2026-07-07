@@ -10,7 +10,8 @@ import {
 import { formatPrice, type Article } from '@extracom/site-kit';
 import { BuyBox } from '@/components/site/BuyBox';
 import { JsonLd } from '@/components/site/JsonLd';
-import { COMMERCE_ENABLED } from '@/lib/config';
+import { COMMERCE_ENABLED, extracomOrderUrl } from '@/lib/config';
+import { ExternalLink } from 'lucide-react';
 import { getBrand, brandHref } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
@@ -174,15 +175,21 @@ export default async function ProduitPage({
             />
           ) : (
             <div className="max-w-sm space-y-2">
+              <a
+                href={extracomOrderUrl(article.reference)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary flex w-full items-center justify-center gap-2"
+              >
+                <ExternalLink className="size-4" />
+                Commander
+              </a>
               <Link
                 href={`/contact?ref=${encodeURIComponent(article.reference)}`}
-                className="btn-primary flex w-full items-center justify-center"
+                className="block text-center text-sm font-medium text-[var(--brand)] hover:text-[var(--brand-dark)]"
               >
                 Demander un devis
               </Link>
-              <p className="text-xs text-neutral-500">
-                Réponse sous 24h ouvrées — conseil et démonstration sur demande.
-              </p>
             </div>
           )}
         </div>
