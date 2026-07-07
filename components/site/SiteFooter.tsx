@@ -13,13 +13,15 @@ export function SiteFooter() {
     <footer className="mt-20 border-t border-neutral-200 bg-white">
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-5">
         <div>
-          <Image
-            src="/wedis/logo.png"
-            alt="Wédis"
-            width={140}
-            height={140}
-            className="h-28 w-auto"
-          />
+          <Link href="/" aria-label="Accueil Wédis" className="inline-block">
+            <Image
+              src="/wedis/logo.png"
+              alt="Wédis"
+              width={140}
+              height={140}
+              className="h-28 w-auto"
+            />
+          </Link>
           <address className="mt-4 space-y-2 text-sm text-neutral-600 not-italic">
             <p className="font-semibold text-[var(--brand-slate)] underline">
               {SITE.address.street}
