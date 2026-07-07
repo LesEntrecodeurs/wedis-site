@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUpDown, Tag, X } from 'lucide-react';
+import { ArrowRight, ArrowUpDown, SlidersHorizontal, Tag, X } from 'lucide-react';
 import type { ArticleSort } from '@extracom/site-kit';
 import {
   Select,
@@ -83,11 +83,16 @@ export function CatalogueFilters({
   );
 
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-2.5 rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm">
+    <div className="mb-6 flex flex-wrap items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2.5">
+      <span className="hidden items-center gap-1.5 pr-1 text-sm font-medium text-neutral-500 sm:flex">
+        <SlidersHorizontal className="size-4 text-neutral-400" />
+        Filtres
+      </span>
+
       {/* Catégorie active (posée via le menu navbar) — puce retirable dédiée,
           en plus du « Réinitialiser » global. */}
       {activeCatalogLabel && (
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-light)] py-1.5 pr-2 pl-3 text-sm font-medium text-[var(--brand-dark)]">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--brand-light)] py-1 pr-2 pl-3 text-sm font-medium text-[var(--brand-dark)]">
           {activeCatalogLabel}
           <button
             type="button"
@@ -105,7 +110,7 @@ export function CatalogueFilters({
           value={current.brand ?? ALL}
           onValueChange={(v) => apply({ brand: v === ALL ? undefined : v })}
         >
-          <SelectTrigger className="w-[190px] rounded-full">
+          <SelectTrigger className="h-9 w-[180px] rounded-lg border-neutral-200">
             <Tag className="size-4 text-neutral-400" />
             <SelectValue placeholder="Marque" />
           </SelectTrigger>
@@ -120,9 +125,9 @@ export function CatalogueFilters({
         </Select>
       )}
 
-      {/* Fourchette de prix (sur le prix de base) */}
+      {/* Fourchette de prix (sur le prix de base) — groupe borduré unique */}
       <form
-        className="flex items-center gap-1"
+        className="flex h-9 items-center rounded-lg border border-neutral-200 pr-1"
         onSubmit={(e) => {
           e.preventDefault();
           apply({ pmin: pmin || undefined, pmax: pmax || undefined });
@@ -134,28 +139,28 @@ export function CatalogueFilters({
           inputMode="decimal"
           value={pmin}
           onChange={(e) => setPmin(e.target.value)}
-          placeholder="Min €"
-          className="field w-[90px] rounded-full"
+          placeholder="Prix min"
+          className="w-[88px] border-0 bg-transparent px-3 text-sm outline-none placeholder:text-neutral-400"
           aria-label="Prix minimum"
         />
-        <span className="text-neutral-400">–</span>
+        <span className="text-neutral-300">–</span>
         <input
           type="number"
           min={0}
           inputMode="decimal"
           value={pmax}
           onChange={(e) => setPmax(e.target.value)}
-          placeholder="Max €"
-          className="field w-[90px] rounded-full"
+          placeholder="max"
+          className="w-[64px] border-0 bg-transparent px-2 text-sm outline-none placeholder:text-neutral-400"
           aria-label="Prix maximum"
         />
-        <Button
+        <button
           type="submit"
-          size="sm"
-          className="rounded-full bg-[var(--brand-accent)] px-5 text-white hover:bg-[var(--brand-accent-dark)]"
+          aria-label="Appliquer le filtre prix"
+          className="rounded-md p-1.5 text-[var(--brand)] transition hover:bg-[var(--brand-light)]"
         >
-          OK
-        </Button>
+          <ArrowRight className="size-4" />
+        </button>
       </form>
 
       {/* Tri — toujours disponible */}
@@ -163,7 +168,7 @@ export function CatalogueFilters({
         value={current.sort ?? 'name_asc'}
         onValueChange={(v) => apply({ sort: v })}
       >
-        <SelectTrigger className="ml-auto w-[185px] rounded-full">
+        <SelectTrigger className="ml-auto h-9 w-[180px] rounded-lg border-neutral-200">
           <ArrowUpDown className="size-4 text-neutral-400" />
           <SelectValue />
         </SelectTrigger>
