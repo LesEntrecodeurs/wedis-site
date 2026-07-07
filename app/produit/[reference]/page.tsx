@@ -76,11 +76,7 @@ export default async function ProduitPage({
           offers: {
             '@type': 'Offer',
             price: article.price,
-            priceCurrency: 'EUR',
-            availability:
-              (article.stockQuantity ?? 1) > 0
-                ? 'https://schema.org/InStock'
-                : 'https://schema.org/OutOfStock'
+            priceCurrency: 'EUR'
           }
         }
       : {})
@@ -150,14 +146,6 @@ export default async function ProduitPage({
             ? ` · par ${article.packagingQuantity}`
             : ''}
         </p>
-
-        {typeof article.stockQuantity === 'number' && (
-          <p className="mt-2 text-sm text-neutral-600">
-            {article.stockQuantity > 0
-              ? `En stock (${article.stockQuantity})`
-              : 'Rupture de stock'}
-          </p>
-        )}
 
         {article.description && (
           <p className="mt-4 whitespace-pre-line text-neutral-700">

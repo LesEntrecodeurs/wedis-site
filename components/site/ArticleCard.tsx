@@ -82,22 +82,6 @@ export function ArticleCard({ article }: { article: Article }) {
           </p>
         )}
 
-        {/* Stock : la donnée est déjà façonnée par les settings côté serveur
-            (absente / disponibilité / quantité exacte). On l'affiche telle quelle. */}
-        {article.stockQuantity != null && (
-          <p
-            className={`mt-1 text-xs font-medium ${
-              article.stockQuantity > 0
-                ? 'text-[var(--brand-dark)]'
-                : 'text-red-500'
-            }`}
-          >
-            {article.stockQuantity > 0
-              ? `En stock${article.stockQuantity > 1 ? ` (${article.stockQuantity})` : ''}`
-              : 'Épuisé'}
-          </p>
-        )}
-
         <div className="mt-auto pt-3">
           {!COMMERCE_ENABLED ? (
             // Vitrine : la commande se fait sur le portail Extracom.

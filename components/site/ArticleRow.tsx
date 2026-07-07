@@ -59,19 +59,6 @@ export function ArticleRow({ article }: { article: Article }) {
             déclinaisons
           </p>
         )}
-        {article.stockQuantity != null && (
-          <p
-            className={`mt-1 text-xs font-medium ${
-              article.stockQuantity > 0
-                ? 'text-[var(--brand-dark)]'
-                : 'text-red-500'
-            }`}
-          >
-            {article.stockQuantity > 0
-              ? `En stock${article.stockQuantity > 1 ? ` (${article.stockQuantity})` : ''}`
-              : 'Épuisé'}
-          </p>
-        )}
       </div>
 
       <div className="flex w-40 shrink-0 flex-col items-end justify-center gap-2">
