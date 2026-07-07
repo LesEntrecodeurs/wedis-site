@@ -1,5 +1,6 @@
 import type { Article } from '@extracom/site-kit';
 import { BRAND_LOGO_SLUGS } from '@/data/brand-logos';
+import { BRAND_DESCRIPTIONS } from '@/data/brand-descriptions';
 
 // Nom du champ libre portant la marque (info-libre Sage « Marque »).
 export const BRAND_FIELD = 'Marque';
@@ -39,4 +40,15 @@ export function brandLogo(name: string): string | undefined {
       (s) => s.startsWith(`${slug}-`) || slug.startsWith(`${s}-`)
     );
   return match ? `/wedis/marques/${match}.jpg` : undefined;
+}
+
+/** Descriptif d'une marque (contenu wedis.fr), ou undefined si aucun. */
+export function brandDescription(name: string): string | undefined {
+  const slug = brandSlug(name);
+  if (!slug) return undefined;
+  if (BRAND_DESCRIPTIONS[slug]) return BRAND_DESCRIPTIONS[slug];
+  const key = Object.keys(BRAND_DESCRIPTIONS).find(
+    (s) => s.startsWith(`${slug}-`) || slug.startsWith(`${s}-`)
+  );
+  return key ? BRAND_DESCRIPTIONS[key] : undefined;
 }

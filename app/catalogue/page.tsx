@@ -24,7 +24,8 @@ import { CatalogueFilters } from '@/components/site/CatalogueFilters';
 import { CatalogueSidebar } from '@/components/site/CatalogueSidebar';
 import { InfoBanner } from '@/components/site/InfoBanner';
 import { EmptyState } from '@/components/site/EmptyState';
-import { BRAND_FIELD, brandLogo } from '@/lib/brand';
+import { BRAND_FIELD, brandLogo, brandDescription } from '@/lib/brand';
+import { BrandDescription } from '@/components/site/BrandDescription';
 
 export const dynamic = 'force-dynamic';
 
@@ -219,26 +220,31 @@ export default async function CataloguePage({
           </nav>
 
           {brand && (
-            <div className="mb-4 flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
-              {brandLogo(brand) && (
-                <span className="relative h-12 w-28 shrink-0">
-                  <Image
-                    src={brandLogo(brand) as string}
-                    alt={`Logo ${brand}`}
-                    fill
-                    sizes="112px"
-                    className="object-contain"
-                  />
-                </span>
-              )}
-              <div className="min-w-0">
-                <p className="text-xs font-semibold tracking-wide text-[var(--brand)] uppercase">
-                  Marque
-                </p>
-                <p className="truncate text-lg font-bold text-[var(--brand-slate)]">
-                  {brand}
-                </p>
+            <div className="mb-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
+              <div className="flex items-center gap-4">
+                {brandLogo(brand) && (
+                  <span className="relative h-12 w-28 shrink-0">
+                    <Image
+                      src={brandLogo(brand) as string}
+                      alt={`Logo ${brand}`}
+                      fill
+                      sizes="112px"
+                      className="object-contain"
+                    />
+                  </span>
+                )}
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold tracking-wide text-[var(--brand)] uppercase">
+                    Marque
+                  </p>
+                  <p className="truncate text-lg font-bold text-[var(--brand-slate)]">
+                    {brand}
+                  </p>
+                </div>
               </div>
+              {brandDescription(brand) && (
+                <BrandDescription text={brandDescription(brand) as string} />
+              )}
             </div>
           )}
 
