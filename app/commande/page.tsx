@@ -77,16 +77,18 @@ function CommandeContent() {
       </p>
     );
 
-  const steps = deliveryEnabled
-    ? ['Panier', 'Livraison', 'Récapitulatif']
-    : ['Panier', 'Récapitulatif'];
-  const deliveryStep = deliveryEnabled ? 1 : -1;
-  const reviewStep = steps.length - 1;
+  // La livraison a toujours lieu → l'étape adresse est toujours présente. Le
+  // réglage `deliveryEnabled` concerne le choix du transporteur dans le
+  // département (affiché en complément quand des modes sont proposés).
+  const steps = ['Panier', 'Livraison', 'Récapitulatif'];
+  const deliveryStep = 1;
+  const reviewStep = 2;
+  const modes = options?.modes ?? [];
   const selectedAddress = (options?.addresses ?? []).find(
     (a) => a.id === cart.deliveryAddressId
   );
   const hasDelivery = !!cart.deliveryAddressId;
-  const deliveryOk = !deliveryEnabled || hasDelivery;
+  const deliveryOk = hasDelivery;
 
   const pay = async () => {
     await persistComment();
@@ -191,24 +193,66 @@ function CommandeContent() {
               </button>
             )}
           </div>
+
+          {deliveryEnabled && modes.length > 0 && (
+            <div className="mt-6">
+              <h3 className="mb-2 text-sm font-medium text-neutral-700">
+                Transporteurs disponibles
+              </h3>
+              <ul className="space-y-1 text-sm text-neutral-600">
+                {modes.map((m) => (
+                  <li
+                    key={m.id}
+                    className="flex justify-between rounded-md border border-neutral-200 px-3 py-2"
+                  >
+                    <span>{m.label}</span>
+                    {typeof m.fee === 'number' && (
+                      <span className="font-medium">
+                        {m.fee > 0 ? formatPrice(m.fee) : 'Offert'}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-1 text-xs text-neutral-400">
+                Le transporteur est attribué selon votre département.
+              </p>
+            </div>
+          )}
         </section>
       )}
 
       {step === reviewStep && (
         <section className="space-y-5">
-          <div className="card p-5">
-            <div className="flex justify-between text-sm">
-              <span className="text-neutral-500">Total TTC</span>
-              <span className="text-lg font-semibold">{total}</span>
-            </div>
-            {deliveryEnabled && (
-              <p className="mt-2 text-sm text-neutral-500">
-                Livraison :{' '}
+          <div className="card space-y-2 p-5">
+            <p className="text-sm text-neutral-500">
+              Livraison :{' '}
+              <span className="text-neutral-700">
                 {selectedAddress
                   ? `${selectedAddress.line1}, ${selectedAddress.postalCode} ${selectedAddress.city}`
                   : '—'}
-              </p>
-            )}
+              </span>
+            </p>
+            {cart.shipping?.mode &&
+              cart.shipping.mode.toUpperCase() !== 'AUCUN' && (
+                <p className="text-sm text-neutral-500">
+                  Transporteur :{' '}
+                  <span className="text-neutral-700">{cart.shipping.mode}</span>
+                  {cart.shipping.fee > 0
+                    ? ` — ${formatPrice(cart.shipping.fee)}`
+                    : ''}
+                </p>
+              )}
+            <div className="flex justify-between border-t border-neutral-100 pt-2">
+              <span className="text-neutral-500">Total TTC</span>
+              <span className="text-lg font-semibold">
+                {formatPrice(
+                  cart.totals?.totalWithShipping ??
+                    cart.totals?.totalInclVat ??
+                    null
+                )}
+              </span>
+            </div>
           </div>
           <div>
             <label className="text-sm text-neutral-600">
