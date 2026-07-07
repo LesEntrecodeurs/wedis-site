@@ -47,7 +47,14 @@ export default function CommandesPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-xl font-semibold">Mes documents</h1>
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold text-[var(--brand-slate)]">
+          Mes documents
+        </h1>
+        <p className="mt-1 text-sm text-neutral-500">
+          Retrouvez vos devis, commandes et factures.
+        </p>
+      </header>
 
       <div className="mb-4 flex flex-wrap gap-2">
         <Tab

@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { LogIn } from 'lucide-react';
 import { useAuth, useShopContext } from '@extracom/site-kit/react';
 import { apiErrorMessage } from '@/lib/api-error';
+import { AuthCard } from '@/components/site/AuthCard';
 
 export default function ConnexionPage() {
   const { login } = useAuth();
@@ -17,8 +19,34 @@ export default function ConnexionPage() {
   const [err, setErr] = useState<string | null>(null);
 
   return (
-    <div className="mx-auto max-w-sm">
-      <h1 className="mb-6 text-2xl font-bold">Connexion</h1>
+    <AuthCard
+      icon={LogIn}
+      title="Connexion"
+      subtitle="Accédez à votre espace professionnel Wédis."
+      footer={
+        <div className="space-y-1">
+          {registrationOpen && (
+            <p>
+              Pas encore de compte ?{' '}
+              <Link
+                href="/inscription"
+                className="font-medium text-[var(--brand-dark)] hover:underline"
+              >
+                Créer un compte
+              </Link>
+            </p>
+          )}
+          <p>
+            <Link
+              href="/mot-de-passe-oublie"
+              className="font-medium text-[var(--brand-dark)] hover:underline"
+            >
+              Mot de passe oublié ?
+            </Link>
+          </p>
+        </div>
+      }
+    >
       <form
         className="space-y-4"
         onSubmit={async (e) => {
@@ -51,7 +79,7 @@ export default function ConnexionPage() {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded border px-3 py-2"
+          className="field"
         />
         <input
           type="password"
@@ -59,40 +87,24 @@ export default function ConnexionPage() {
           placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded border px-3 py-2"
+          className="field"
         />
         {err && (
-          <p role="alert" className="text-sm text-red-600">
+          <p
+            role="alert"
+            className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+          >
             {err}
           </p>
         )}
         <button
           type="submit"
           disabled={pending}
-          className="w-full rounded bg-[var(--brand)] py-2 text-white disabled:opacity-50"
+          className="btn-primary w-full"
         >
           {pending ? '…' : 'Se connecter'}
         </button>
       </form>
-      {registrationOpen && (
-        <p className="mt-4 text-sm text-neutral-600">
-          Pas de compte ?{' '}
-          <Link
-            href="/inscription"
-            className="text-[var(--brand-dark)] underline"
-          >
-            Créer un compte
-          </Link>
-        </p>
-      )}
-      <p className="mt-1 text-sm text-neutral-600">
-        <Link
-          href="/mot-de-passe-oublie"
-          className="text-[var(--brand-dark)] underline"
-        >
-          Mot de passe oublié ?
-        </Link>
-      </p>
-    </div>
+    </AuthCard>
   );
 }

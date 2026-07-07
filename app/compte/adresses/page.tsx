@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { MapPin, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { useDelivery } from '@extracom/site-kit/react';
 import { AddressForm } from '@/components/site/AddressForm';
@@ -15,12 +16,26 @@ export default function AdressesPage() {
 
   return (
     <div className="max-w-lg">
-      <h1 className="mb-6 text-xl font-semibold">Mes adresses</h1>
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold text-[var(--brand-slate)]">
+          Mes adresses
+        </h1>
+        <p className="mt-1 text-sm text-neutral-500">
+          Vos adresses de livraison et de facturation enregistrées.
+        </p>
+      </header>
 
       {isLoading ? (
         <ListSkeleton rows={3} />
       ) : addresses.length === 0 ? (
-        <p className="text-sm text-neutral-500">Aucune adresse enregistrée.</p>
+        <div className="card flex flex-col items-center gap-2 p-8 text-center">
+          <span className="text-neutral-300">
+            <MapPin className="h-7 w-7" />
+          </span>
+          <p className="text-sm text-neutral-500">
+            Aucune adresse enregistrée pour le moment.
+          </p>
+        </div>
       ) : (
         <ul className="space-y-2">
           {addresses.map((a) =>
@@ -108,7 +123,8 @@ export default function AdressesPage() {
             }}
             className="btn-outline"
           >
-            + Ajouter une adresse
+            <Plus className="h-4 w-4" />
+            Ajouter une adresse
           </button>
         )}
       </div>

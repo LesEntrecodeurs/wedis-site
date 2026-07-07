@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { KeyRound } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAccount } from '@extracom/site-kit/react';
 import { apiErrorMessage } from '@/lib/api-error';
+import { AuthCard } from '@/components/site/AuthCard';
 
 type Step = 'email' | 'code' | 'password';
 
@@ -21,15 +23,27 @@ export default function MotDePasseOubliePage() {
   const [confirm, setConfirm] = useState('');
   const [err, setErr] = useState<string | null>(null);
 
-  return (
-    <div className="mx-auto max-w-sm">
-      <h1 className="mb-2 text-2xl font-bold">Mot de passe oublié</h1>
-      <p className="mb-6 text-sm text-neutral-500">
-        {step === 'email' && 'Recevez un code de réinitialisation par email.'}
-        {step === 'code' && 'Saisissez le code reçu par email.'}
-        {step === 'password' && 'Choisissez un nouveau mot de passe.'}
-      </p>
+  const subtitle =
+    step === 'email'
+      ? 'Recevez un code de réinitialisation par email.'
+      : step === 'code'
+        ? 'Saisissez le code reçu par email.'
+        : 'Choisissez un nouveau mot de passe.';
 
+  return (
+    <AuthCard
+      icon={KeyRound}
+      title="Mot de passe oublié"
+      subtitle={subtitle}
+      footer={
+        <Link
+          href="/connexion"
+          className="font-medium text-[var(--brand-dark)] hover:underline"
+        >
+          Retour à la connexion
+        </Link>
+      }
+    >
       {step === 'email' && (
         <form
           className="space-y-4"
@@ -56,7 +70,10 @@ export default function MotDePasseOubliePage() {
             className="field"
           />
           {err && (
-            <p role="alert" className="text-sm text-red-600">
+            <p
+              role="alert"
+              className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+            >
               {err}
             </p>
           )}
@@ -92,7 +109,10 @@ export default function MotDePasseOubliePage() {
             className="field"
           />
           {err && (
-            <p role="alert" className="text-sm text-red-600">
+            <p
+              role="alert"
+              className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+            >
               {err}
             </p>
           )}
@@ -150,7 +170,10 @@ export default function MotDePasseOubliePage() {
             className="field"
           />
           {err && (
-            <p role="alert" className="text-sm text-red-600">
+            <p
+              role="alert"
+              className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+            >
               {err}
             </p>
           )}
@@ -163,12 +186,6 @@ export default function MotDePasseOubliePage() {
           </button>
         </form>
       )}
-
-      <p className="mt-6 text-sm text-neutral-600">
-        <Link href="/connexion" className="text-[var(--brand-dark)] underline">
-          Retour à la connexion
-        </Link>
-      </p>
-    </div>
+    </AuthCard>
   );
 }

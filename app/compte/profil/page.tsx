@@ -47,7 +47,14 @@ export default function ProfilPage() {
     <div className="max-w-lg space-y-8">
       {/* Identité — éditable (self-service) */}
       <div>
-        <h1 className="mb-6 text-xl font-semibold">Profil</h1>
+        <header className="mb-6">
+          <h1 className="text-2xl font-bold text-[var(--brand-slate)]">
+            Profil
+          </h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            Gérez vos informations personnelles et votre mot de passe.
+          </p>
+        </header>
         <form
           className="card space-y-4 p-5"
           onSubmit={async (e) => {
@@ -108,7 +115,9 @@ export default function ProfilPage() {
       {/* Entreprises rattachées */}
       {user.memberships.length > 0 && (
         <div>
-          <h2 className="mb-2 text-sm font-medium">Entreprises rattachées</h2>
+          <h2 className="mb-3 text-base font-semibold text-[var(--brand-slate)]">
+            Entreprises rattachées
+          </h2>
           <ul className="space-y-2">
             {user.memberships.map((m) => {
               const isActive = m.customerId === activeId;
@@ -151,7 +160,9 @@ export default function ProfilPage() {
 
       {/* Sécurité */}
       <section>
-        <h2 className="mb-3 text-sm font-medium">Sécurité — mot de passe</h2>
+        <h2 className="mb-3 text-base font-semibold text-[var(--brand-slate)]">
+          Sécurité — mot de passe
+        </h2>
         <form
           className="card space-y-4 p-5"
           onSubmit={async (e) => {
@@ -194,7 +205,10 @@ export default function ProfilPage() {
             className="field"
           />
           {err && (
-            <p role="alert" className="text-sm text-red-600">
+            <p
+              role="alert"
+              className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+            >
               {err}
             </p>
           )}

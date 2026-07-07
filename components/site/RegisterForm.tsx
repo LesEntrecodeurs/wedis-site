@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAccount } from '@extracom/site-kit/react';
 import type { RegisterInput, TermsDocument } from '@extracom/site-kit';
@@ -47,13 +48,20 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
 
   if (done)
     return (
-      <p className="rounded bg-green-50 p-4 text-green-800">
-        Votre compte a bien été créé. Vous pouvez dès à présent vous{' '}
-        <Link href="/connexion" className="underline">
-          connecter
-        </Link>
-        .
-      </p>
+      <div className="rounded-md border border-green-200 bg-green-50 p-4 text-center text-sm text-green-800">
+        <CheckCircle2 className="mx-auto mb-2 h-8 w-8 text-green-600" />
+        <p className="font-medium">Votre compte a bien été créé.</p>
+        <p className="mt-1">
+          Vous pouvez dès à présent vous{' '}
+          <Link
+            href="/connexion"
+            className="font-medium underline underline-offset-2"
+          >
+            connecter
+          </Link>
+          .
+        </p>
+      </div>
     );
 
   return (
@@ -257,13 +265,16 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
       <button
         type="submit"
         disabled={isLoading || !accept}
-        className="w-full rounded bg-[var(--brand)] py-2 text-white disabled:opacity-50"
+        className="btn-primary w-full"
       >
         {isLoading ? '…' : 'Créer mon compte'}
       </button>
-      <p className="text-center text-sm text-neutral-500">
+      <p className="text-center text-sm text-neutral-600">
         Déjà un compte ?{' '}
-        <Link href="/connexion" className="text-[var(--brand-dark)] underline">
+        <Link
+          href="/connexion"
+          className="font-medium text-[var(--brand-dark)] hover:underline"
+        >
           Se connecter
         </Link>
       </p>

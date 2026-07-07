@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Trash2 } from 'lucide-react';
 import { useCart } from '@extracom/site-kit/react';
 import { formatPrice } from '@extracom/site-kit';
 import { AuthGate } from '@/components/site/AuthGate';
@@ -39,12 +39,16 @@ function PanierContent() {
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
       <div>
-        <h1 className="mb-6 text-xl font-semibold">Votre panier</h1>
+        <h1 className="mb-6 text-2xl font-bold text-[var(--brand-slate)]">
+          Votre panier
+        </h1>
         <ul className="card divide-y divide-neutral-100">
           {cart.lines.map((line) => (
             <li key={line.id} className="flex items-center gap-4 p-4">
-              <div className="flex-1">
-                <p className="font-medium">{line.label ?? line.reference}</p>
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-[var(--brand-slate)]">
+                  {line.label ?? line.reference}
+                </p>
                 {line.variantLabel && (
                   <p className="text-xs text-neutral-500">
                     Déclinaison : {line.variantLabel}
@@ -61,9 +65,10 @@ function PanierContent() {
                 onBlur={(e) =>
                   updateLine(line.id, { quantity: Number(e.target.value) })
                 }
+                aria-label={`Quantité pour ${line.label ?? line.reference}`}
                 className="field w-16 text-center"
               />
-              <div className="w-24 text-right font-medium">
+              <div className="w-24 text-right font-medium text-[var(--brand-slate)]">
                 {formatPrice(
                   line.lineTotalInclVat ?? line.unitPrice * line.quantity
                 )}
@@ -72,9 +77,9 @@ function PanierContent() {
                 type="button"
                 onClick={() => removeItem(line.id)}
                 aria-label={`Retirer ${line.label ?? line.reference} du panier`}
-                className="text-sm text-neutral-400 hover:text-red-600"
+                className="shrink-0 text-neutral-400 transition hover:text-red-600"
               >
-                <span aria-hidden="true">✕</span>
+                <Trash2 className="h-4 w-4" />
               </button>
             </li>
           ))}
@@ -82,21 +87,23 @@ function PanierContent() {
       </div>
 
       <aside className="card h-fit p-5">
-        <h2 className="text-sm font-medium text-neutral-500">Récapitulatif</h2>
-        <div className="mt-3 flex justify-between text-sm">
+        <h2 className="text-sm font-semibold text-[var(--brand-slate)]">
+          Récapitulatif
+        </h2>
+        <div className="mt-4 flex justify-between text-sm text-neutral-600">
           <span>Sous-total HT</span>
           <span>{formatPrice(cart.totals?.totalExclVat ?? null)}</span>
         </div>
-        <div className="mt-1 flex justify-between text-sm">
+        <div className="mt-2 flex justify-between text-sm text-neutral-600">
           <span>TVA</span>
           <span>{formatPrice(cart.totals?.totalVat ?? null)}</span>
         </div>
-        <div className="mt-3 flex justify-between border-t border-neutral-100 pt-3 text-lg font-semibold">
+        <div className="mt-4 flex justify-between border-t border-neutral-200 pt-4 text-lg font-semibold text-[var(--brand-slate)]">
           <span>Total TTC</span>
           <span>{formatPrice(cart.totals?.totalInclVat ?? null)}</span>
         </div>
         <Link href="/commande" className="btn-primary mt-5 w-full">
-          Commander
+          Passer commande
         </Link>
       </aside>
     </div>

@@ -1,6 +1,8 @@
+import { UserPlus } from 'lucide-react';
 import { getContextAction } from '@extracom/site-kit/server';
 import type { TermsDocument } from '@extracom/site-kit';
 import { RegisterForm } from '@/components/site/RegisterForm';
+import { AuthCard } from '@/components/site/AuthCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,9 +16,13 @@ export default async function InscriptionPage() {
   }
 
   return (
-    <div className="mx-auto max-w-sm">
-      <h1 className="mb-6 text-2xl font-bold">Créer un compte</h1>
+    <AuthCard
+      icon={UserPlus}
+      title="Créer un compte"
+      subtitle="Ouvrez votre compte professionnel pour commander en ligne."
+      size="lg"
+    >
       <RegisterForm terms={terms} />
-    </div>
+    </AuthCard>
   );
 }
