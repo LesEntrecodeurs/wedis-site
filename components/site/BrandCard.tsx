@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 type Block =
   | { type: 'heading'; text: string }
   | { type: 'paragraph'; text: string }
   | { type: 'list'; items: string[] };
 
-// Parse le markdown-lite (« ## » titre, « - » puce, sinon paragraphe) en blocs.
+// Parse le markdown-lite (« ## » titre, « - » puce, sinon paragraphe).
 function parse(text: string): Block[] {
   const blocks: Block[] = [];
   let list: string[] | null = null;
@@ -78,31 +79,59 @@ function Blocks({ blocks }: { blocks: Block[] }) {
 }
 
 /**
- * Descriptif marque (contenu wedis.fr, markdown-lite). Aperçu = intro (jusqu'au
- * 1er paragraphe) ; « En savoir plus » déplie le descriptif complet (titres en
- * gras, paragraphes, puces).
+ * Encart marque du catalogue : en-tête (logo encadré + nom + toggle « En savoir
+ * plus » à droite). Le descriptif (contenu wedis.fr, markdown-lite) ne s'affiche
+ * qu'au clic, sous l'en-tête — rien à l'arrivée.
  */
-export function BrandDescription({ text }: { text: string }) {
+export function BrandCard({
+  brand,
+  logo,
+  description
+}: {
+  brand: string;
+  logo?: string;
+  description?: string;
+}) {
   const [open, setOpen] = useState(false);
-  const blocks = parse(text);
-  // Aperçu : jusqu'au premier paragraphe inclus.
-  const firstPara = blocks.findIndex((b) => b.type === 'paragraph');
-  const teaser = firstPara >= 0 ? blocks.slice(0, firstPara + 1) : blocks.slice(0, 1);
-  const hasMore = teaser.length < blocks.length;
+  const blocks = description ? parse(description) : [];
 
   return (
-    <div className="mt-2">
-      <Blocks blocks={open ? blocks : teaser} />
-      {hasMore && (
-        <div className="mt-2 flex justify-end">
+    <div className="mb-6 overflow-hidden rounded-xl border border-neutral-200 bg-white">
+      <div className="flex items-center gap-5 bg-gradient-to-r from-[var(--brand-light)] to-transparent px-5 py-4">
+        {logo && (
+          <span className="relative flex h-16 w-36 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-white p-2.5 shadow-sm">
+            <Image
+              src={logo}
+              alt={`Logo ${brand}`}
+              fill
+              sizes="144px"
+              className="object-contain"
+            />
+          </span>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-semibold tracking-widest text-[var(--brand)] uppercase">
+            Marque
+          </p>
+          <p className="truncate text-xl font-bold text-[var(--brand-slate)]">
+            {brand}
+          </p>
+        </div>
+        {description && (
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
-            className="text-xs font-medium text-[var(--brand)] hover:text-[var(--brand-dark)]"
+            className="shrink-0 self-start text-sm font-medium text-[var(--brand)] hover:text-[var(--brand-dark)]"
           >
             {open ? 'Réduire' : 'En savoir plus'}
           </button>
+        )}
+      </div>
+
+      {open && description && (
+        <div className="border-t border-neutral-100 px-5 py-4">
+          <Blocks blocks={blocks} />
         </div>
       )}
     </div>

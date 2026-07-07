@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { unstable_cache } from 'next/cache';
 import { Lock, PackageSearch } from 'lucide-react';
 import {
@@ -25,7 +24,7 @@ import { CatalogueSidebar } from '@/components/site/CatalogueSidebar';
 import { InfoBanner } from '@/components/site/InfoBanner';
 import { EmptyState } from '@/components/site/EmptyState';
 import { BRAND_FIELD, brandLogo, brandDescription } from '@/lib/brand';
-import { BrandDescription } from '@/components/site/BrandDescription';
+import { BrandCard } from '@/components/site/BrandCard';
 import { COMMERCE_ENABLED } from '@/lib/config';
 
 export const dynamic = 'force-dynamic';
@@ -221,32 +220,11 @@ export default async function CataloguePage({
           </nav>
 
           {brand && (
-            <div className="mb-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
-              <div className="flex items-center gap-4">
-                {brandLogo(brand) && (
-                  <span className="relative h-12 w-28 shrink-0">
-                    <Image
-                      src={brandLogo(brand) as string}
-                      alt={`Logo ${brand}`}
-                      fill
-                      sizes="112px"
-                      className="object-contain"
-                    />
-                  </span>
-                )}
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold tracking-wide text-[var(--brand)] uppercase">
-                    Marque
-                  </p>
-                  <p className="truncate text-lg font-bold text-[var(--brand-slate)]">
-                    {brand}
-                  </p>
-                </div>
-              </div>
-              {brandDescription(brand) && (
-                <BrandDescription text={brandDescription(brand) as string} />
-              )}
-            </div>
+            <BrandCard
+              brand={brand}
+              logo={brandLogo(brand)}
+              description={brandDescription(brand)}
+            />
           )}
 
           <CatalogueFilters
