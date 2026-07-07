@@ -11,9 +11,19 @@ import { ConseilCards } from '@/components/site/ConseilCards';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { CtaBand } from '@/components/site/CtaBand';
 import { CONSEILS } from '@/data/conseils';
+import type { Metadata } from 'next';
+import { SITE } from '@/lib/site';
 
 const ACTUALITES = CONSEILS.filter((c) => c.category === 'Actualités');
 const GUIDES = CONSEILS.filter((c) => c.category === 'Robots');
+
+export const metadata: Metadata = {
+  title: {
+    absolute: `${SITE.name} — Matériel de nettoyage professionnel dans le Grand Est`
+  },
+  description: SITE.description,
+  alternates: { canonical: '/' }
+};
 
 export const dynamic = 'force-dynamic';
 

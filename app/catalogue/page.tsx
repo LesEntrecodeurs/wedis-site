@@ -219,6 +219,20 @@ export default async function CataloguePage({
             )}
           </nav>
 
+          <h1
+            className={
+              brand
+                ? 'sr-only'
+                : 'mb-4 text-2xl font-bold text-[var(--brand-slate)]'
+            }
+          >
+            {search
+              ? `Recherche : « ${search} »`
+              : brand
+                ? `Marque ${brand}`
+                : (activeCatalogLabel ?? 'Catalogue')}
+          </h1>
+
           {brand && (
             <BrandCard
               brand={brand}
