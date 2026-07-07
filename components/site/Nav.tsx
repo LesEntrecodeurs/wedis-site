@@ -4,6 +4,7 @@ import { User, Phone } from 'lucide-react';
 import type { ShopContext, User as SdkUser } from '@extracom/site-kit';
 import { CartLink } from './CartLink';
 import { CatalogDropdown } from './CatalogDropdown';
+import { MobileNav } from './MobileNav';
 import { SITE } from '@/lib/site';
 import { COMMERCE_ENABLED, EXTRACOM_CLIENT_URL } from '@/lib/config';
 
@@ -28,7 +29,14 @@ export function Nav({
   return (
     <header className="sticky top-0 z-30">
       <div className="bg-[var(--brand)] text-white">
-        <div className="container-x flex items-center gap-4 py-[18px]">
+        <div className="container-x flex items-center gap-3 py-3 md:gap-4 md:py-[18px]">
+          <MobileNav
+            categories={categories}
+            menu={MENU}
+            clientUrl={EXTRACOM_CLIENT_URL}
+            phone={SITE.phone}
+            phoneHref={SITE.phoneHref}
+          />
           <Link href="/" className="shrink-0">
             <Image
               src="/wedis/logo-white.png"
@@ -36,7 +44,7 @@ export function Nav({
               width={200}
               height={126}
               priority
-              className="h-[86px] w-auto"
+              className="h-12 w-auto md:h-[86px]"
             />
           </Link>
 
@@ -82,7 +90,7 @@ export function Nav({
         </div>
       </div>
 
-      <div className="border-t border-white/10 bg-[var(--brand)] text-white">
+      <div className="hidden border-t border-white/10 bg-[var(--brand)] text-white md:block">
         <div className="container-x flex items-center gap-1">
           <CatalogDropdown categories={categories} />
           <nav className="flex items-center">
