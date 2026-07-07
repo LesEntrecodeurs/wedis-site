@@ -243,15 +243,25 @@ function CommandeContent() {
                     : ''}
                 </p>
               )}
-            <div className="flex justify-between border-t border-neutral-100 pt-2">
-              <span className="text-neutral-500">Total TTC</span>
-              <span className="text-lg font-semibold">
-                {formatPrice(
-                  cart.totals?.totalWithShipping ??
-                    cart.totals?.totalInclVat ??
-                    null
-                )}
-              </span>
+            <div className="mt-1 space-y-1 border-t border-neutral-100 pt-2 text-sm">
+              <div className="flex justify-between text-neutral-500">
+                <span>Sous-total HT</span>
+                <span>{formatPrice(cart.totals?.totalExclVat ?? null)}</span>
+              </div>
+              <div className="flex justify-between text-neutral-500">
+                <span>TVA</span>
+                <span>{formatPrice(cart.totals?.totalVat ?? null)}</span>
+              </div>
+              <div className="flex justify-between pt-1 text-base font-semibold text-[var(--brand-slate)]">
+                <span>Total TTC</span>
+                <span>
+                  {formatPrice(
+                    cart.totals?.totalWithShipping ??
+                      cart.totals?.totalInclVat ??
+                      null
+                  )}
+                </span>
+              </div>
             </div>
           </div>
           <div>
