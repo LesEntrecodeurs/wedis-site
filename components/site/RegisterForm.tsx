@@ -58,10 +58,11 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
   if (done)
     return (
       <p className="rounded bg-green-50 p-4 text-green-800">
-        Compte créé. Il sera actif après validation par un commercial.{' '}
+        Votre compte a bien été créé. Vous pouvez dès à présent vous{' '}
         <Link href="/connexion" className="underline">
-          Connexion
+          connecter
         </Link>
+        .
       </p>
     );
 
