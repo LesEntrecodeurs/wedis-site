@@ -6,6 +6,7 @@ import { ShoppingCart, Check, Loader2 } from 'lucide-react';
 import { useAddToCart } from '@extracom/site-kit/react';
 import { formatPrice, type Gamme } from '@extracom/site-kit';
 import { Button } from '@/components/ui/button';
+import { apiErrorMessage } from '@/lib/api-error';
 
 /**
  * Bloc d'achat de la fiche produit : sélection de déclinaison (gamme) +
@@ -82,8 +83,8 @@ export function BuyBox({
             setAdded(true);
             toast.success('Ajouté au panier');
             setTimeout(() => setAdded(false), 1500);
-          } catch {
-            toast.error("Impossible d'ajouter au panier");
+          } catch (e) {
+            toast.error(apiErrorMessage(e, "Impossible d'ajouter au panier."));
           }
         }}
       >

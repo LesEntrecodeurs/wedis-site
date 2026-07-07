@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useAccount } from '@extracom/site-kit/react';
+import { apiErrorMessage } from '@/lib/api-error';
 
 type Step = 'email' | 'code' | 'password';
 
@@ -39,8 +40,10 @@ export default function MotDePasseOubliePage() {
               await requestPasswordReset(email);
               toast.success('Code envoyé par email');
               setStep('code');
-            } catch {
-              setErr("Impossible d'envoyer le code. Vérifiez l'email.");
+            } catch (e) {
+              setErr(
+                apiErrorMessage(e, "Impossible d'envoyer le code. Vérifiez l'email.")
+              );
             }
           }}
         >
@@ -76,8 +79,8 @@ export default function MotDePasseOubliePage() {
             try {
               await verifyResetCode(email, code);
               setStep('password');
-            } catch {
-              setErr('Code invalide ou expiré.');
+            } catch (e) {
+              setErr(apiErrorMessage(e, 'Code invalide ou expiré.'));
             }
           }}
         >
@@ -124,8 +127,8 @@ export default function MotDePasseOubliePage() {
               await changePassword({ email, code, newPassword: password });
               toast.success('Mot de passe mis à jour');
               router.push('/connexion');
-            } catch {
-              setErr('La réinitialisation a échoué.');
+            } catch (e) {
+              setErr(apiErrorMessage(e, 'La réinitialisation a échoué.'));
             }
           }}
         >

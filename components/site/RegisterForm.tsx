@@ -5,8 +5,17 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { useAccount } from '@extracom/site-kit/react';
 import type { RegisterInput, TermsDocument } from '@extracom/site-kit';
+import { apiErrorMessage } from '@/lib/api-error';
+import { ACTIVITIES, OTHER_ACTIVITY } from '@/data/activities';
 
 type FormState = Omit<RegisterInput, 'acceptTerms' | 'termsDocumentIds'>;
+
+// Le kit ne type pas `activity`/`otherActivity` sur RegisterInput mais forwarde
+// tous les champs au backend (secteur → code Sage, mappé côté Extracom).
+type RegisterPayload = RegisterInput & {
+  activity?: string;
+  otherActivity?: string;
+};
 
 const EMPTY: FormState = {
   firstName: '',
@@ -23,44 +32,11 @@ const EMPTY: FormState = {
   gender: ''
 };
 
-// Traduit l'erreur backend en message lisible. Le kit encapsule l'erreur API
-// dans SiteApiError : `.message` ne vaut que « Site API error <status> », le
-// vrai motif est dans `.body` (JSON { message, error, subErrors }). On l'extrait,
-// puis on mappe quelques cas courants sur un libellé plus clair.
-function registerErrorMessage(err: unknown): string {
-  let raw =
-    err instanceof Error ? err.message : typeof err === 'string' ? err : '';
-  const body = (err as { body?: unknown })?.body;
-  if (typeof body === 'string' && body.trim()) {
-    try {
-      const p = JSON.parse(body) as {
-        error?: string;
-        message?: string;
-        subErrors?: unknown[];
-      };
-      const sub =
-        Array.isArray(p.subErrors) && typeof p.subErrors[0] === 'string'
-          ? (p.subErrors[0] as string)
-          : '';
-      raw = p.error || sub || p.message || raw;
-    } catch {
-      raw = body;
-    }
-  }
-  const m = raw.toLowerCase();
-  if (/e-?mail.*(exist|déjà|already|utilis)|(exist|déjà|already).*e-?mail/.test(m))
-    return 'Un compte existe déjà avec cet e-mail. Essayez de vous connecter.';
-  if (/mot de passe|password/.test(m) && /court|faible|weak|short|8/.test(m))
-    return 'Mot de passe trop faible : au moins 8 caractères.';
-  if (/siret/.test(m)) return 'Le SIRET saisi est invalide.';
-  if (/tva|vat|taxid/.test(m)) return 'Le numéro de TVA intracommunautaire est invalide.';
-  if (/e-?mail/.test(m)) return "L'adresse e-mail est invalide.";
-  return raw.trim() || "L'inscription a échoué. Vérifiez les informations saisies.";
-}
-
 export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
   const { register, isLoading } = useAccount();
   const [f, setF] = useState<FormState>(EMPTY);
+  const [activity, setActivity] = useState('');
+  const [otherActivity, setOtherActivity] = useState('');
   const [accept, setAccept] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -87,14 +63,21 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
         e.preventDefault();
         setError(null);
         try {
-          await register({
+          const payload: RegisterPayload = {
             ...f,
             acceptTerms: accept,
-            termsDocumentIds: terms.map((t) => t.id)
-          });
+            termsDocumentIds: terms.map((t) => t.id),
+            activity: activity || undefined,
+            otherActivity:
+              activity === OTHER_ACTIVITY ? otherActivity || undefined : undefined
+          };
+          await register(payload);
           setDone(true);
         } catch (err) {
-          const msg = registerErrorMessage(err);
+          const msg = apiErrorMessage(
+            err,
+            "L'inscription a échoué. Vérifiez les informations saisies."
+          );
           setError(msg);
           toast.error(msg);
         }
@@ -191,6 +174,29 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
             onChange={set('city')}
           />
         </div>
+        <select
+          className="field"
+          required
+          aria-label="Secteur d'activité"
+          value={activity}
+          onChange={(e) => setActivity(e.target.value)}
+        >
+          <option value="">Secteur d'activité…</option>
+          {ACTIVITIES.map((a) => (
+            <option key={a} value={a}>
+              {a}
+            </option>
+          ))}
+        </select>
+        {activity === OTHER_ACTIVITY && (
+          <input
+            className="field"
+            required
+            placeholder="Précisez votre activité"
+            value={otherActivity}
+            onChange={(e) => setOtherActivity(e.target.value)}
+          />
+        )}
         <div className="flex gap-2">
           <input
             className="field flex-1"

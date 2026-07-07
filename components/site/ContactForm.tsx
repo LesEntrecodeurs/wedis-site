@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useAuth, useSupport } from '@extracom/site-kit/react';
+import { apiErrorMessage } from '@/lib/api-error';
 
 /**
  * Formulaire de contact → ticket support. **Réservé au connecté** (le kit attache
@@ -57,8 +58,10 @@ export function ContactForm() {
           setSubject('');
           setDescription('');
           toast.success('Message envoyé — nous revenons vers vous rapidement.');
-        } catch {
-          toast.error("L'envoi du message a échoué. Réessayez.");
+        } catch (e) {
+          toast.error(
+            apiErrorMessage(e, "L'envoi du message a échoué. Réessayez.")
+          );
         }
       }}
     >

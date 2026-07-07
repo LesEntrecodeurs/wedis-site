@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { useDelivery } from '@extracom/site-kit/react';
 import { AddressForm } from '@/components/site/AddressForm';
 import { ListSkeleton } from '@/components/site/Loader';
+import { apiErrorMessage } from '@/lib/api-error';
 
 export default function AdressesPage() {
   const { options, isLoading, addAddress, updateAddress } = useDelivery();
@@ -42,7 +43,8 @@ export default function AdressesPage() {
                     await toast.promise(updateAddress({ id: a.id, ...data }), {
                       loading: 'Mise à jour…',
                       success: 'Adresse mise à jour',
-                      error: "Impossible de modifier l'adresse"
+                      error: (e) =>
+                        apiErrorMessage(e, "Impossible de modifier l'adresse.")
                     });
                     setEditId(null);
                   }}
@@ -90,7 +92,8 @@ export default function AdressesPage() {
                 await toast.promise(addAddress(a), {
                   loading: 'Ajout…',
                   success: 'Adresse ajoutée',
-                  error: "Impossible d'ajouter l'adresse"
+                  error: (e) =>
+                    apiErrorMessage(e, "Impossible d'ajouter l'adresse.")
                 });
                 setShowAdd(false);
               }}

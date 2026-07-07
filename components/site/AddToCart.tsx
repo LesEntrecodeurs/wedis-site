@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { ShoppingCart, Check, Loader2 } from 'lucide-react';
 import { useAddToCart } from '@extracom/site-kit/react';
 import { Button } from '@/components/ui/button';
+import { apiErrorMessage } from '@/lib/api-error';
 
 export function AddToCart({
   reference,
@@ -27,8 +28,8 @@ export function AddToCart({
           setAdded(true);
           toast.success('Ajouté au panier');
           setTimeout(() => setAdded(false), 1500);
-        } catch {
-          toast.error("Impossible d'ajouter au panier");
+        } catch (e) {
+          toast.error(apiErrorMessage(e, "Impossible d'ajouter au panier."));
         }
       }}
     >

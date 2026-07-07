@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth, useShopContext } from '@extracom/site-kit/react';
+import { apiErrorMessage } from '@/lib/api-error';
 
 export default function ConnexionPage() {
   const { login } = useAuth();
@@ -37,8 +38,8 @@ export default function ConnexionPage() {
                 `/mot-de-passe-oublie?email=${encodeURIComponent(email)}`
               );
             }
-          } catch {
-            setErr('Identifiants invalides.');
+          } catch (e) {
+            setErr(apiErrorMessage(e, 'Identifiants invalides.'));
           } finally {
             setPending(false);
           }

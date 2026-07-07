@@ -8,6 +8,7 @@ import {
   useCompany
 } from '@extracom/site-kit/react';
 import { PageLoader } from '@/components/site/Loader';
+import { apiErrorMessage } from '@/lib/api-error';
 
 export default function ProfilPage() {
   const { user, isLoading: loadingUser, reload } = useAuth();
@@ -57,8 +58,10 @@ export default function ProfilPage() {
               await updateProfile({ name: name.trim(), email: email.trim() });
               await reload();
               toast.success('Profil mis à jour');
-            } catch {
-              toast.error('La mise à jour du profil a échoué.');
+            } catch (e) {
+              toast.error(
+                apiErrorMessage(e, 'La mise à jour du profil a échoué.')
+              );
             } finally {
               setSavingId(false);
             }
@@ -166,8 +169,10 @@ export default function ProfilPage() {
               setPassword('');
               setConfirm('');
               toast.success('Mot de passe mis à jour');
-            } catch {
-              setErr('La mise à jour du mot de passe a échoué.');
+            } catch (e) {
+              setErr(
+                apiErrorMessage(e, 'La mise à jour du mot de passe a échoué.')
+              );
             }
           }}
         >

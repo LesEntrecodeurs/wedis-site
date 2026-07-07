@@ -16,6 +16,7 @@ import { formatPrice } from '@extracom/site-kit';
 import { AddressForm } from '@/components/site/AddressForm';
 import { AuthGate } from '@/components/site/AuthGate';
 import { CartSkeleton } from '@/components/site/Loader';
+import { apiErrorMessage } from '@/lib/api-error';
 
 export default function CommandePage() {
   return (
@@ -257,9 +258,12 @@ function CommandeContent() {
                 setIsQuote(true);
                 setCreated(true);
                 setConfirmedRef(res?.reference ?? '');
-              } catch {
+              } catch (e) {
                 toast.error(
-                  'Le devis n’a pas pu être créé. Vérifiez vos droits ou réessayez.'
+                  apiErrorMessage(
+                    e,
+                    'Le devis n’a pas pu être créé. Vérifiez vos droits ou réessayez.'
+                  )
                 );
               }
             }}
@@ -285,9 +289,12 @@ function CommandeContent() {
                 });
                 setCreated(true);
                 setConfirmedRef(res?.reference ?? '');
-              } catch {
+              } catch (e) {
                 toast.error(
-                  'La commande n’a pas pu être validée. Vérifiez vos droits ou réessayez.'
+                  apiErrorMessage(
+                    e,
+                    'La commande n’a pas pu être validée. Vérifiez vos droits ou réessayez.'
+                  )
                 );
               }
             }}
@@ -320,9 +327,12 @@ function CommandeContent() {
                   const res = await createOrder();
                   setCreated(false);
                   setConfirmedRef(res?.reference ?? '');
-                } catch {
+                } catch (e) {
                   toast.error(
-                    "La commande n'a pas pu être envoyée. Réessayez."
+                    apiErrorMessage(
+                      e,
+                      "La commande n'a pas pu être envoyée. Réessayez."
+                    )
                   );
                 }
               }}
