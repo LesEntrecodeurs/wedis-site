@@ -139,8 +139,8 @@ export function CatalogueFilters({
           inputMode="decimal"
           value={pmin}
           onChange={(e) => setPmin(e.target.value)}
-          placeholder="Prix min"
-          className="w-[88px] border-0 bg-transparent px-3 text-sm outline-none placeholder:text-neutral-400"
+          placeholder="Min €"
+          className="w-[72px] border-0 bg-transparent px-3 text-sm outline-none placeholder:text-neutral-400"
           aria-label="Prix minimum"
         />
         <span className="text-neutral-300">–</span>
@@ -150,8 +150,8 @@ export function CatalogueFilters({
           inputMode="decimal"
           value={pmax}
           onChange={(e) => setPmax(e.target.value)}
-          placeholder="max"
-          className="w-[64px] border-0 bg-transparent px-2 text-sm outline-none placeholder:text-neutral-400"
+          placeholder="Max €"
+          className="w-[72px] border-0 bg-transparent px-3 text-sm outline-none placeholder:text-neutral-400"
           aria-label="Prix maximum"
         />
         <button
