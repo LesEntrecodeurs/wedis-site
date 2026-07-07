@@ -23,11 +23,33 @@ const EMPTY: FormState = {
   gender: ''
 };
 
+// Traduit l'erreur backend en message lisible. Surface le message de la
+// SiteApiError (souvent explicite : email déjà utilisé, SIRET invalide…) et
+// mappe quelques cas courants sur un libellé plus clair.
+function registerErrorMessage(err: unknown): string {
+  const raw =
+    err instanceof Error
+      ? err.message
+      : typeof err === 'string'
+        ? err
+        : '';
+  const m = raw.toLowerCase();
+  if (/e-?mail.*(exist|déjà|already|utilis)|(exist|déjà|already).*e-?mail/.test(m))
+    return 'Un compte existe déjà avec cet e-mail. Essayez de vous connecter.';
+  if (/mot de passe|password/.test(m) && /court|faible|weak|short|8/.test(m))
+    return 'Mot de passe trop faible : au moins 8 caractères.';
+  if (/siret/.test(m)) return 'Le SIRET saisi est invalide.';
+  if (/tva|vat|taxid/.test(m)) return 'Le numéro de TVA intracommunautaire est invalide.';
+  if (/e-?mail/.test(m)) return "L'adresse e-mail est invalide.";
+  return raw.trim() || "L'inscription a échoué. Vérifiez les informations saisies.";
+}
+
 export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
   const { register, isLoading } = useAccount();
   const [f, setF] = useState<FormState>(EMPTY);
   const [accept, setAccept] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const set =
     (k: keyof FormState) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -48,6 +70,7 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
       className="space-y-5"
       onSubmit={async (e) => {
         e.preventDefault();
+        setError(null);
         try {
           await register({
             ...f,
@@ -55,10 +78,10 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
             termsDocumentIds: terms.map((t) => t.id)
           });
           setDone(true);
-        } catch {
-          toast.error(
-            "L'inscription a échoué. Vérifiez les informations saisies."
-          );
+        } catch (err) {
+          const msg = registerErrorMessage(err);
+          setError(msg);
+          toast.error(msg);
         }
       }}
     >
@@ -200,6 +223,15 @@ export function RegisterForm({ terms }: { terms: TermsDocument[] }) {
           ))}
         </span>
       </label>
+
+      {error && (
+        <p
+          role="alert"
+          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+        >
+          {error}
+        </p>
+      )}
 
       <button
         type="submit"
