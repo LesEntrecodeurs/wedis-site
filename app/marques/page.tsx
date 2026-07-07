@@ -16,13 +16,13 @@ export const metadata: Metadata = {
   alternates: { canonical: '/marques' }
 };
 
-export const revalidate = 600;
+export const revalidate = 3600;
 
 // Liste des marques du catalogue (champ libre « Marque »), mise en cache.
 const cachedBrands = unstable_cache(
   () => getAnonymousArticleFieldValuesAction(BRAND_FIELD),
   ['marques-list'],
-  { revalidate: 600, tags: ['catalogue'] }
+  { revalidate: 3600, tags: ['catalogue'] }
 );
 
 export default async function MarquesPage() {

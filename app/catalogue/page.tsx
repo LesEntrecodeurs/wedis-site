@@ -40,12 +40,12 @@ const cachedAnonArticles = unstable_cache(
 const cachedAnonContext = unstable_cache(
   () => getAnonymousContextAction(),
   ['catalogue-anon-context'],
-  { revalidate: 600, tags: ['catalogue'] }
+  { revalidate: 3600, tags: ['catalogue'] }
 );
 const cachedBrands = unstable_cache(
   () => getAnonymousArticleFieldValuesAction(BRAND_FIELD),
   ['marques-list'],
-  { revalidate: 600, tags: ['catalogue'] }
+  { revalidate: 3600, tags: ['catalogue'] }
 );
 
 export async function generateMetadata({

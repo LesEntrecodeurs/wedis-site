@@ -2,7 +2,8 @@ import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
-import { getContextAction, meAction } from '@extracom/site-kit/server';
+import { unstable_cache } from 'next/cache';
+import { getAnonymousContextAction, meAction } from '@extracom/site-kit/server';
 import type { ShopContext, User } from '@extracom/site-kit';
 import { Nav } from '@/components/site/Nav';
 import { JsonLd } from '@/components/site/JsonLd';
@@ -22,13 +23,22 @@ const openSans = Open_Sans({
 // (CI-safe : le build ne touche pas le backend).
 export const dynamic = 'force-dynamic';
 
+// Contexte shop (arbre catégories + branding) : identique pour tous → mis en
+// cache long. Évite un appel backend coûteux (arbre ~400 catégories) à chaque
+// page. L'utilisateur connecté est résolu à part (meAction, non caché).
+const cachedContext = unstable_cache(
+  () => getAnonymousContextAction(),
+  ['layout-context'],
+  { revalidate: 3600, tags: ['catalogue'] }
+);
+
 // Métadonnées par défaut, dérivées du shop. Chaque page peut surcharger via son
 // propre `generateMetadata` (cf. produit / catalogue).
 export async function generateMetadata(): Promise<Metadata> {
   let name: string = SITE.name;
   const description = SITE.description;
   try {
-    const c = await getContextAction();
+    const c = await cachedContext();
     name = c.branding?.name ?? c.shopName ?? name;
   } catch {
     /* dégrade proprement */
@@ -51,7 +61,7 @@ export default async function RootLayout({
 }) {
   let context: ShopContext | null = null;
   try {
-    context = await getContextAction();
+    context = await cachedContext();
   } catch {
     context = null;
   }
