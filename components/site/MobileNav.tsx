@@ -11,18 +11,21 @@ import type { CatalogNode } from '@extracom/site-kit';
 export function MobileNav({
   categories,
   menu,
-  clientUrl,
+  accountHref,
+  accountLabel,
   phone,
   phoneHref
 }: {
   categories: CatalogNode[];
   menu: [string, string][];
-  clientUrl: string;
+  accountHref: string;
+  accountLabel: string;
   phone: string;
   phoneHref: string;
 }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+  const accountExternal = /^https?:\/\//.test(accountHref);
 
   return (
     <div className="md:hidden">
@@ -93,15 +96,26 @@ export function MobileNav({
             </nav>
 
             <div className="border-t border-neutral-100 px-4 py-4">
-              <a
-                href={clientUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 py-2 text-sm font-medium text-[var(--brand-dark)]"
-              >
-                <User className="size-5" />
-                Espace Client
-              </a>
+              {accountExternal ? (
+                <a
+                  href={accountHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 py-2 text-sm font-medium text-[var(--brand-dark)]"
+                >
+                  <User className="size-5" />
+                  {accountLabel}
+                </a>
+              ) : (
+                <Link
+                  href={accountHref}
+                  onClick={close}
+                  className="flex items-center gap-2 py-2 text-sm font-medium text-[var(--brand-dark)]"
+                >
+                  <User className="size-5" />
+                  {accountLabel}
+                </Link>
+              )}
               <a
                 href={`tel:${phoneHref}`}
                 className="flex items-center gap-2 py-2 text-sm font-medium text-[var(--brand-dark)]"

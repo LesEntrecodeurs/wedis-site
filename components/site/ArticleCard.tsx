@@ -110,6 +110,14 @@ export function ArticleCard({ article }: { article: Article }) {
               <ExternalLink className="size-4" />
               Commander
             </a>
+          ) : article.price == null ? (
+            // Anonyme (prix masqué) : le panier est réservé aux connectés.
+            <Link
+              href="/connexion"
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--brand)] px-4 py-2 text-sm font-medium text-[var(--brand-dark)] hover:bg-[var(--brand-light)]"
+            >
+              Se connecter
+            </Link>
           ) : hasVariants ? (
             // Article à déclinaisons : on ne peut pas l'ajouter sans choisir
             // → renvoi vers la fiche pour sélectionner la déclinaison.

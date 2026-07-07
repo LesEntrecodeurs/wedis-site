@@ -26,6 +26,16 @@ export function Nav({
   const categories = context?.catalogTree ?? [];
   const firstName = user?.name?.split(' ')[0];
 
+  // En mode e-commerce : espace client interne (compte si connecté, sinon
+  // connexion). En vitrine : redirection vers le portail Extracom.
+  const accountHref = COMMERCE_ENABLED
+    ? user
+      ? '/compte'
+      : '/connexion'
+    : EXTRACOM_CLIENT_URL;
+  const accountLabel =
+    firstName ?? (COMMERCE_ENABLED ? 'Mon compte' : 'Espace Client');
+
   return (
     <header className="sticky top-0 z-30">
       <div className="bg-[var(--brand)] text-white">
@@ -33,7 +43,8 @@ export function Nav({
           <MobileNav
             categories={categories}
             menu={MENU}
-            clientUrl={EXTRACOM_CLIENT_URL}
+            accountHref={accountHref}
+            accountLabel={accountLabel}
             phone={SITE.phone}
             phoneHref={SITE.phoneHref}
           />
@@ -69,15 +80,25 @@ export function Nav({
           </form>
 
           <div className="ml-auto flex items-center gap-6">
-            <a
-              href={EXTRACOM_CLIENT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
-            >
-              <User className="size-6 fill-current" strokeWidth={1.5} />
-              <span>{firstName ? firstName : 'Espace Client'}</span>
-            </a>
+            {COMMERCE_ENABLED ? (
+              <Link
+                href={accountHref}
+                className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
+              >
+                <User className="size-6 fill-current" strokeWidth={1.5} />
+                <span>{accountLabel}</span>
+              </Link>
+            ) : (
+              <a
+                href={accountHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
+              >
+                <User className="size-6 fill-current" strokeWidth={1.5} />
+                <span>{accountLabel}</span>
+              </a>
+            )}
             {COMMERCE_ENABLED && user && <CartLink />}
             <a
               href={`tel:${SITE.phoneHref}`}

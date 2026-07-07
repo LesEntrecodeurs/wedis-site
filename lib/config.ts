@@ -6,7 +6,7 @@
  * complet en propre (panier + commande via le kit, déjà câblé). Basculer à
  * `true` réactive tout le circuit sans rien réécrire.
  */
-export const COMMERCE_ENABLED = false;
+export const COMMERCE_ENABLED = true;
 
 /** Portail client/commande Extracom (externe). Surchargeable par env. */
 export const EXTRACOM_CLIENT_URL =
