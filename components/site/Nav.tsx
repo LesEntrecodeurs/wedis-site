@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { User, Phone } from 'lucide-react';
+import { UserRound, Phone } from 'lucide-react';
 import type { ShopContext, User as SdkUser } from '@extracom/site-kit';
 import { CartLink } from './CartLink';
 import { CatalogDropdown } from './CatalogDropdown';
@@ -79,13 +79,14 @@ export function Nav({
             </div>
           </form>
 
-          <div className="ml-auto flex items-center gap-6">
+          <div className="ml-auto flex items-center gap-5 text-white md:gap-6">
+            {COMMERCE_ENABLED && user && <CartLink />}
             {COMMERCE_ENABLED ? (
               <Link
                 href={accountHref}
                 className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
               >
-                <User className="size-6 fill-current" strokeWidth={1.5} />
+                <UserRound className="size-6" strokeWidth={1.75} />
                 <span>{accountLabel}</span>
               </Link>
             ) : (
@@ -95,16 +96,15 @@ export function Nav({
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)]"
               >
-                <User className="size-6 fill-current" strokeWidth={1.5} />
+                <UserRound className="size-6" strokeWidth={1.75} />
                 <span>{accountLabel}</span>
               </a>
             )}
-            {COMMERCE_ENABLED && user && <CartLink />}
             <a
               href={`tel:${SITE.phoneHref}`}
               className="hidden flex-col items-center gap-0.5 text-xs transition hover:text-[var(--brand-accent-light)] sm:flex"
             >
-              <Phone className="size-6 fill-current" strokeWidth={1.5} />
+              <Phone className="size-6" strokeWidth={1.75} />
               <span>{SITE.phone}</span>
             </a>
           </div>
