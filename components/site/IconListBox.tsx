@@ -16,6 +16,7 @@ export function IconListBox({ items }: { items: IconListItem[] }) {
       <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2 md:grid-cols-3">
         {items.map((it) => {
           const inner = (
+            // biome-ignore lint/correctness/useJsxKeyInIterable: clé déjà posée sur l'élément racine rendu (Link/div key={it.title} ci-dessous)
             <div className="flex gap-4">
               <span className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-[var(--brand-accent)] text-[var(--brand)]">
                 <it.icon className="size-6" />

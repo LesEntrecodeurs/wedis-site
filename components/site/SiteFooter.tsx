@@ -82,8 +82,8 @@ function FooterCol({
     <div>
       <p className="font-bold text-[var(--brand-slate)]">{title}</p>
       <ul className="mt-3 space-y-2 text-sm text-[var(--brand-slate)]">
-        {links.map(([label, href], i) => (
-          <li key={`${href}-${i}`}>
+        {links.map(([label, href]) => (
+          <li key={href}>
             <Link
               href={href}
               className="transition hover:text-[var(--brand-hover)]"

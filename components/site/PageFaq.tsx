@@ -24,7 +24,7 @@ export function PageFaq({
       <SectionHeading eyebrow="FAQ" title={heading} align="center" />
       <Accordion type="single" collapsible className="mx-auto mt-8 max-w-3xl">
         {items.map((f, i) => (
-          <AccordionItem key={i} value={`faq-${i}`}>
+          <AccordionItem key={f.question} value={`faq-${i}`}>
             <AccordionTrigger className="text-left text-base font-medium text-[var(--brand-slate)]">
               {f.question}
             </AccordionTrigger>

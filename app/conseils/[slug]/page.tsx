@@ -65,6 +65,7 @@ export default async function ConseilPage({
         </p>
         <div className="mt-4 space-y-5 text-[17px] leading-relaxed text-neutral-700">
           {conseil.paragraphs.map((p, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: paragraphes statiques (contenu éditorial, jamais réordonné)
             <p key={i}>{p}</p>
           ))}
         </div>

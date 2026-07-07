@@ -28,7 +28,8 @@ function parse(text: string): Block[] {
       flush();
       blocks.push({ type: 'heading', text: line.slice(3).trim() });
     } else if (line.startsWith('- ')) {
-      (list ??= []).push(line.slice(2).trim());
+      list ??= [];
+      list.push(line.slice(2).trim());
     } else {
       flush();
       blocks.push({ type: 'paragraph', text: line });
@@ -45,6 +46,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
         if (b.type === 'heading')
           return (
             <h4
+              // biome-ignore lint/suspicious/noArrayIndexKey: blocs dérivés d'un parsing statique, ordre stable
               key={i}
               className="mt-4 font-bold text-[var(--brand-slate)] first:mt-0"
             >
@@ -53,9 +55,11 @@ function Blocks({ blocks }: { blocks: Block[] }) {
           );
         if (b.type === 'list')
           return (
+            // biome-ignore lint/suspicious/noArrayIndexKey: blocs dérivés d'un parsing statique, ordre stable
             <ul key={i} className="mt-2 space-y-1">
               {b.items.map((it, j) => (
                 <li
+                  // biome-ignore lint/suspicious/noArrayIndexKey: puces dérivées d'un parsing statique, ordre stable
                   key={j}
                   className="flex gap-2 text-sm leading-relaxed text-neutral-600"
                 >
@@ -67,6 +71,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
           );
         return (
           <p
+            // biome-ignore lint/suspicious/noArrayIndexKey: blocs dérivés d'un parsing statique, ordre stable
             key={i}
             className="mt-2 text-sm leading-relaxed text-neutral-600 first:mt-0"
           >

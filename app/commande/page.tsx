@@ -97,7 +97,7 @@ function CommandeContent() {
   };
 
   const runOrder = async (
-    fn: () => Promise<{ reference?: string } | void>,
+    fn: () => Promise<{ reference?: string } | undefined>,
     quote: boolean,
     validated: boolean,
     fallback: string
@@ -265,10 +265,11 @@ function CommandeContent() {
             </div>
           </div>
           <div>
-            <label className="text-sm text-neutral-600">
+            <label htmlFor="commande-reference" className="text-sm text-neutral-600">
               Référence de commande
             </label>
             <input
+              id="commande-reference"
               value={reference}
               onChange={(e) => setReference(e.target.value)}
               placeholder="Votre référence (bon de commande…)"
@@ -276,8 +277,11 @@ function CommandeContent() {
             />
           </div>
           <div>
-            <label className="text-sm text-neutral-600">Commentaire</label>
+            <label htmlFor="commande-comment" className="text-sm text-neutral-600">
+              Commentaire
+            </label>
             <textarea
+              id="commande-comment"
               value={comment}
               onChange={(e) => setCommentValue(e.target.value.slice(0, 69))}
               placeholder="Note pour la préparation (69 caractères max)"

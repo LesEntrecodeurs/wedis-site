@@ -34,6 +34,7 @@ export function PageHero({
           {trail.map((c, i) => {
             const last = i === trail.length - 1;
             return (
+              // biome-ignore lint/suspicious/noArrayIndexKey: fil d'ariane statique, ordre stable
               <Fragment key={`${c.label}-${i}`}>
                 <BreadcrumbItem>
                   {last || !c.href ? (

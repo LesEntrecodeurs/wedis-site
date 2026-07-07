@@ -77,6 +77,7 @@ export default function DocumentPage({
         <ul className="divide-y divide-neutral-100">
           {doc.lines.map((l, i) => (
             <li
+              // biome-ignore lint/suspicious/noArrayIndexKey: référence produit non garantie unique sur la commande
               key={`${l.reference}-${i}`}
               className="flex justify-between gap-4 p-4"
             >
