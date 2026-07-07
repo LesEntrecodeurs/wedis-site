@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { unstable_cache } from 'next/cache';
 import { Lock, PackageSearch } from 'lucide-react';
 import {
@@ -23,7 +24,7 @@ import { CatalogueFilters } from '@/components/site/CatalogueFilters';
 import { CatalogueSidebar } from '@/components/site/CatalogueSidebar';
 import { InfoBanner } from '@/components/site/InfoBanner';
 import { EmptyState } from '@/components/site/EmptyState';
-import { BRAND_FIELD } from '@/lib/brand';
+import { BRAND_FIELD, brandLogo } from '@/lib/brand';
 
 export const dynamic = 'force-dynamic';
 
@@ -174,7 +175,7 @@ export default async function CataloguePage({
             <span aria-hidden className="text-neutral-300">
               /
             </span>
-            {catalogTrail.length === 0 ? (
+            {catalogTrail.length === 0 && !brand ? (
               <span className="font-medium text-neutral-700">Catalogue</span>
             ) : (
               <>
@@ -189,7 +190,7 @@ export default async function CataloguePage({
                     <span aria-hidden className="text-neutral-300">
                       /
                     </span>
-                    {i === catalogTrail.length - 1 ? (
+                    {i === catalogTrail.length - 1 && !brand ? (
                       <span className="font-medium text-neutral-700">
                         {node.label}
                       </span>
@@ -203,9 +204,43 @@ export default async function CataloguePage({
                     )}
                   </span>
                 ))}
+                {brand && (
+                  <span className="flex items-center gap-1.5">
+                    <span aria-hidden className="text-neutral-300">
+                      /
+                    </span>
+                    <span className="font-medium text-neutral-700">
+                      {brand}
+                    </span>
+                  </span>
+                )}
               </>
             )}
           </nav>
+
+          {brand && (
+            <div className="mb-4 flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm">
+              {brandLogo(brand) && (
+                <span className="relative h-12 w-28 shrink-0">
+                  <Image
+                    src={brandLogo(brand) as string}
+                    alt={`Logo ${brand}`}
+                    fill
+                    sizes="112px"
+                    className="object-contain"
+                  />
+                </span>
+              )}
+              <div className="min-w-0">
+                <p className="text-xs font-semibold tracking-wide text-[var(--brand)] uppercase">
+                  Marque
+                </p>
+                <p className="truncate text-lg font-bold text-[var(--brand-slate)]">
+                  {brand}
+                </p>
+              </div>
+            </div>
+          )}
 
           <CatalogueFilters
         brands={brands}
