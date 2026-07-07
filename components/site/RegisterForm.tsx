@@ -23,16 +23,30 @@ const EMPTY: FormState = {
   gender: ''
 };
 
-// Traduit l'erreur backend en message lisible. Surface le message de la
-// SiteApiError (souvent explicite : email déjà utilisé, SIRET invalide…) et
-// mappe quelques cas courants sur un libellé plus clair.
+// Traduit l'erreur backend en message lisible. Le kit encapsule l'erreur API
+// dans SiteApiError : `.message` ne vaut que « Site API error <status> », le
+// vrai motif est dans `.body` (JSON { message, error, subErrors }). On l'extrait,
+// puis on mappe quelques cas courants sur un libellé plus clair.
 function registerErrorMessage(err: unknown): string {
-  const raw =
-    err instanceof Error
-      ? err.message
-      : typeof err === 'string'
-        ? err
-        : '';
+  let raw =
+    err instanceof Error ? err.message : typeof err === 'string' ? err : '';
+  const body = (err as { body?: unknown })?.body;
+  if (typeof body === 'string' && body.trim()) {
+    try {
+      const p = JSON.parse(body) as {
+        error?: string;
+        message?: string;
+        subErrors?: unknown[];
+      };
+      const sub =
+        Array.isArray(p.subErrors) && typeof p.subErrors[0] === 'string'
+          ? (p.subErrors[0] as string)
+          : '';
+      raw = p.error || sub || p.message || raw;
+    } catch {
+      raw = body;
+    }
+  }
   const m = raw.toLowerCase();
   if (/e-?mail.*(exist|déjà|already|utilis)|(exist|déjà|already).*e-?mail/.test(m))
     return 'Un compte existe déjà avec cet e-mail. Essayez de vous connecter.';
