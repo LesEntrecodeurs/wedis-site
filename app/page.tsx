@@ -8,9 +8,15 @@ export default function HomePage() {
           sites, avec un accompagnement de proximité : conseil, installation, formation et suivi.
         </p>
         <div>
-          <a href="/robots-et-machines">Découvrir nos robots &amp; machines</a>
-          <a href="/produits-entretien">Explorer les produits d&apos;entretien</a>
-          <a href="/contact">Demander un conseil personnalisé</a>
+          <a className="btn-primary" href="/robots-et-machines">
+            Découvrir nos robots &amp; machines
+          </a>
+          <a className="btn-secondary" href="/produits-entretien">
+            Explorer les produits d&apos;entretien
+          </a>
+          <a className="btn-secondary" href="/contact">
+            Demander un conseil personnalisé
+          </a>
         </div>
       </section>
 
