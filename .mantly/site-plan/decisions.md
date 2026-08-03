@@ -22,6 +22,15 @@ Ce que le client a explicitement tranché, avec ses mots. Le système s'y tient 
 			},
 			"quote": "ok fais toutes les pages",
 			"consequence": "Je vais avancer seul sur la définition détaillée de toutes les pages du site, sans vous les reproposer une par une ; vous pourrez bien sûr demander des ajustements ensuite si besoin."
+		},
+		{
+			"kind": "delegate",
+			"scope": {
+				"kind": "step",
+				"step": "design"
+			},
+			"quote": "peu importe",
+			"consequence": "Je vais choisir moi-même la direction graphique la plus adaptée parmi celles proposées, sans vous les reproposer à chaque fois, ce qui fixe le style global du site pour la suite."
 		}
 	]
 }
