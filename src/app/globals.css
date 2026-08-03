@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fafafa;
+    --foreground: #212427;
+    --card: #f4f5f5;
+    --card-foreground: #212427;
+    --popover: #f4f5f5;
+    --popover-foreground: #212427;
+    --primary: #003366;
+    --primary-foreground: #fafafa;
+    --secondary: #76b28a;
+    --secondary-foreground: #fafafa;
+    --muted: #f4f5f5;
+    --muted-foreground: #697077;
+    --accent: #37bea7;
+    --accent-foreground: #fafafa;
+    --destructive: #ab2a21;
+    --destructive-foreground: #fafafa;
+    --border: #dfe0e2;
+    --input: #dfe0e2;
+    --ring: #003366;
+    --radius: 8px;
+  }
+}
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
