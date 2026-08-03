@@ -10,6 +10,7 @@ answers:
   brand-colors: couleurs actuelles du site wedis.fr
   brand-usage-constraints: aucune contrainte particulière connue
   brand-refusals: false
+  copywriting-registre: vouvoiement
 deferred:
   - legal-hebergeur
 proposed:
