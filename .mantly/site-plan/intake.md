@@ -11,6 +11,9 @@ answers:
   brand-usage-constraints: aucune contrainte particulière connue
   brand-refusals: false
   copywriting-registre: vouvoiement
+  copywriting-ton: accessible
+  copywriting-interdits: false
+  design-direction-ton: dynamique
 deferred:
   - legal-hebergeur
 proposed:
